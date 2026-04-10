@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import { ButtonHTMLAttributes, forwardRef } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'neon';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'neon' | 'popular';
   size?: 'sm' | 'md' | 'lg';
   loading?: boolean;
 }
@@ -37,6 +37,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         'border border-[#64ff6b]/40 hover:border-[#64ff6b]/70',
         'bg-transparent hover:bg-[#64ff6b]/08',
         'shadow-[0_0_15px_rgba(100,255,107,0.2)] hover:shadow-[0_0_25px_rgba(100,255,107,0.4)]',
+        'hover:-translate-y-0.5',
+      ].join(' '),
+      popular: [
+        'text-[#0a0e27] font-bold',
+        'bg-[#64ff6b] hover:bg-[#80ff87]',
+        'shadow-[0_0_25px_rgba(100,255,107,0.4)] hover:shadow-[0_0_40px_rgba(100,255,107,0.6)]',
         'hover:-translate-y-0.5',
       ].join(' '),
     };

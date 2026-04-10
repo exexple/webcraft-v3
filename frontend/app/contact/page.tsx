@@ -101,7 +101,7 @@ export default function ContactPage() {
                 <Clock size={14} style={{ color: '#00d4ff' }} />
                 <div className="text-white font-semibold text-sm">Response Time</div>
               </div>
-              <div className="text-xs" style={{ color: '#64748b' }}>We typically respond within 2–4 hours during business hours (IST).</div>
+              <div className="text-xs" style={{ color: '#64748b' }}>We typically respond within 2-4 hours during business hours (IST).</div>
             </div>
           </div>
 

@@ -139,13 +139,8 @@ export default function PricingPage() {
 
               <Link href="/contact">
                 <Button
-                  variant={plan.popular ? 'primary' : 'outline'}
+                  variant={plan.popular ? 'popular' : 'outline'}
                   className="w-full"
-                  style={plan.popular ? {
-                    background: plan.accentColor,
-                    color: '#0a0e27',
-                    boxShadow: `0 0 25px ${plan.accentColor}40`,
-                  } : undefined}
                 >
                   {plan.cta}
                 </Button>

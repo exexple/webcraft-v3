@@ -11,6 +11,28 @@ interface FormData {
   message: string;
 }
 
+const baseInputStyle: React.CSSProperties = {
+  width: '100%',
+  background: 'rgba(255,255,255,0.03)',
+  border: '1px solid rgba(255,255,255,0.08)',
+  borderRadius: '0.75rem',
+  padding: '0.875rem 1rem',
+  color: 'white',
+  fontSize: '0.875rem',
+  outline: 'none',
+  transition: 'all 0.2s ease',
+};
+
+function handleFocus(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  e.target.style.borderColor = 'rgba(0,212,255,0.4)';
+  e.target.style.boxShadow = '0 0 0 3px rgba(0,212,255,0.08)';
+}
+
+function handleBlur(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  e.target.style.borderColor = 'rgba(255,255,255,0.08)';
+  e.target.style.boxShadow = 'none';
+}
+
 export default function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
@@ -44,18 +66,6 @@ export default function ContactForm() {
     }
   };
 
-  const inputStyle = {
-    width: '100%',
-    background: 'rgba(255,255,255,0.03)',
-    border: '1px solid rgba(255,255,255,0.08)',
-    borderRadius: '0.75rem',
-    padding: '0.875rem 1rem',
-    color: 'white',
-    fontSize: '0.875rem',
-    outline: 'none',
-    transition: 'all 0.2s ease',
-  };
-
   const inputClass = 'w-full rounded-xl px-4 py-3.5 text-sm text-white outline-none transition-all duration-200 placeholder-shown:text-slate-500';
 
   return (
@@ -79,9 +89,9 @@ export default function ContactForm() {
             {...register('name', { required: 'Name is required', minLength: { value: 2, message: 'Name must be at least 2 characters' } })}
             placeholder="Your Name *"
             className={inputClass}
-            style={inputStyle}
-            onFocus={(e) => { e.target.style.borderColor = 'rgba(0,212,255,0.4)'; e.target.style.boxShadow = '0 0 0 3px rgba(0,212,255,0.08)'; }}
-            onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.08)'; e.target.style.boxShadow = 'none'; }}
+            style={baseInputStyle}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
           />
           {errors.name && <p className="text-xs mt-1" style={{ color: '#f87171' }}>{errors.name.message}</p>}
         </div>
@@ -94,9 +104,9 @@ export default function ContactForm() {
             type="email"
             placeholder="Email Address *"
             className={inputClass}
-            style={inputStyle}
-            onFocus={(e) => { e.target.style.borderColor = 'rgba(0,212,255,0.4)'; e.target.style.boxShadow = '0 0 0 3px rgba(0,212,255,0.08)'; }}
-            onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.08)'; e.target.style.boxShadow = 'none'; }}
+            style={baseInputStyle}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
           />
           {errors.email && <p className="text-xs mt-1" style={{ color: '#f87171' }}>{errors.email.message}</p>}
         </div>
@@ -108,9 +118,9 @@ export default function ContactForm() {
           type="tel"
           placeholder="Phone Number (optional)"
           className={inputClass}
-          style={inputStyle}
-          onFocus={(e) => { e.target.style.borderColor = 'rgba(0,212,255,0.4)'; e.target.style.boxShadow = '0 0 0 3px rgba(0,212,255,0.08)'; }}
-          onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.08)'; e.target.style.boxShadow = 'none'; }}
+          style={baseInputStyle}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
       </div>
 
@@ -120,9 +130,9 @@ export default function ContactForm() {
           rows={5}
           placeholder="Tell us about your project *"
           className={`${inputClass} resize-none`}
-          style={inputStyle}
-          onFocus={(e) => { e.target.style.borderColor = 'rgba(0,212,255,0.4)'; e.target.style.boxShadow = '0 0 0 3px rgba(0,212,255,0.08)'; }}
-          onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.08)'; e.target.style.boxShadow = 'none'; }}
+          style={baseInputStyle}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
         {errors.message && <p className="text-xs mt-1" style={{ color: '#f87171' }}>{errors.message.message}</p>}
       </div>
