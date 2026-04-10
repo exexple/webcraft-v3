@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 const team = [
-  { name: 'Manas Pratim Bordoloi', role: 'Founder & Lead Developer', avatar: 'MB', bio: 'Visionary developer with 5+ years building premium web experiences for global brands. Passionate about performance and design.', color: '#00d4ff' },
+  { name: 'Manas Pratim Bordoloi', role: 'Founder & Lead Developer', avatar: 'MPB', bio: 'Visionary developer with 5+ years building premium web experiences for global brands. Passionate about performance and design.', color: '#00d4ff' },
   { name: 'Alex Chen', role: 'UI/UX Lead Designer', avatar: 'AC', bio: 'Creates intuitive, beautiful interfaces that convert visitors into customers with a keen eye for detail.', color: '#64ff6b' },
   { name: 'Jordan Smith', role: 'Full-Stack Engineer', avatar: 'JS', bio: 'Specializes in performance optimization and scalable architecture for complex web applications.', color: '#00d4ff' },
 ];
