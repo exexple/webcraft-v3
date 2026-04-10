@@ -1,0 +1,46 @@
+import type { Metadata } from 'next';
+import { ThemeProvider } from 'next-themes';
+import Navbar from '@/components/ui/Navbar';
+import Footer from '@/components/ui/Footer';
+import './globals.css';
+
+export const metadata: Metadata = {
+  title: {
+    default: 'Webcraft Studio — Premium Web Development Agency',
+    template: '%s | Webcraft Studio',
+  },
+  description: 'We build high-converting websites and digital experiences for modern brands. Custom web development, design, and optimization.',
+  keywords: ['web development', 'web design', 'Next.js', 'React', 'digital agency'],
+  authors: [{ name: 'Webcraft Studio' }],
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://webcraftstudio.com',
+    siteName: 'Webcraft Studio',
+    title: 'Webcraft Studio — Premium Web Development Agency',
+    description: 'We build high-converting websites and digital experiences for modern brands.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Webcraft Studio',
+    description: 'We build high-converting websites for modern brands.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body className="bg-gray-950 text-white antialiased">
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
