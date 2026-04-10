@@ -3,20 +3,42 @@ import { cn } from '@/lib/utils';
 import { ButtonHTMLAttributes, forwardRef } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'neon';
   size?: 'sm' | 'md' | 'lg';
   loading?: boolean;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', loading, children, disabled, ...props }, ref) => {
-    const base = 'inline-flex items-center justify-center font-semibold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:ring-offset-transparent disabled:opacity-50 disabled:cursor-not-allowed';
+    const base = 'inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:ring-offset-2 focus:ring-offset-transparent disabled:opacity-50 disabled:cursor-not-allowed select-none';
 
     const variants = {
-      primary: 'bg-cyan-500 hover:bg-cyan-400 text-gray-950 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-400/40 hover:-translate-y-0.5',
-      secondary: 'bg-violet-600 hover:bg-violet-500 text-white shadow-lg shadow-violet-600/25 hover:shadow-violet-500/40 hover:-translate-y-0.5',
-      outline: 'border border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400',
+      primary: [
+        'text-gray-950 font-bold',
+        'bg-[#00d4ff] hover:bg-[#22d3ee]',
+        'shadow-[0_0_20px_rgba(0,212,255,0.35)] hover:shadow-[0_0_30px_rgba(0,212,255,0.5)]',
+        'hover:-translate-y-0.5',
+      ].join(' '),
+      secondary: [
+        'text-white',
+        'bg-violet-600 hover:bg-violet-500',
+        'shadow-[0_0_20px_rgba(124,58,237,0.35)] hover:shadow-[0_0_30px_rgba(124,58,237,0.5)]',
+        'hover:-translate-y-0.5',
+      ].join(' '),
+      outline: [
+        'text-[#00d4ff] font-semibold',
+        'border border-[#00d4ff]/40 hover:border-[#00d4ff]/70',
+        'bg-transparent hover:bg-[#00d4ff]/08',
+        'hover:-translate-y-0.5',
+      ].join(' '),
       ghost: 'text-gray-400 hover:text-white hover:bg-white/10',
+      neon: [
+        'text-[#64ff6b] font-bold',
+        'border border-[#64ff6b]/40 hover:border-[#64ff6b]/70',
+        'bg-transparent hover:bg-[#64ff6b]/08',
+        'shadow-[0_0_15px_rgba(100,255,107,0.2)] hover:shadow-[0_0_25px_rgba(100,255,107,0.4)]',
+        'hover:-translate-y-0.5',
+      ].join(' '),
     };
 
     const sizes = {

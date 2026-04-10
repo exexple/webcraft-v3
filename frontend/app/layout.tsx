@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="bg-gray-950 text-white antialiased">
+      <body className="bg-navy-900 text-white antialiased" style={{ backgroundColor: '#0a0e27' }}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <Navbar />
           <main>{children}</main>
