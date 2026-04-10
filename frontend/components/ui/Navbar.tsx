@@ -13,6 +13,7 @@ const navLinks = [
   { href: '/case-studies', label: 'Work' },
   { href: '/about', label: 'About' },
   { href: '/process', label: 'Process' },
+  { href: '/testimonials', label: 'Reviews' },
   { href: '/pricing', label: 'Pricing' },
 ];
 
@@ -30,36 +31,50 @@ export default function Navbar() {
   useEffect(() => setIsOpen(false), [pathname]);
 
   return (
-    <nav className={cn(
-      'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-      scrolled
-        ? 'bg-gray-950/90 backdrop-blur-xl border-b border-white/10 shadow-lg'
-        : 'bg-transparent'
-    )}>
+    <nav
+      className={cn(
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+        scrolled ? 'shadow-lg' : ''
+      )}
+      style={{
+        background: scrolled
+          ? 'rgba(10, 14, 39, 0.95)'
+          : 'transparent',
+        backdropFilter: scrolled ? 'blur(20px)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(26, 31, 58, 0.8)' : 'none',
+      }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-violet-600 flex items-center justify-center shadow-lg shadow-cyan-500/30 group-hover:shadow-cyan-500/50 transition-shadow">
+            <div
+              className="w-8 h-8 rounded-lg flex items-center justify-center shadow-lg transition-all duration-300 group-hover:scale-110"
+              style={{
+                background: 'linear-gradient(135deg, #00d4ff 0%, #0066ff 100%)',
+                boxShadow: '0 4px 15px rgba(0, 212, 255, 0.4)',
+              }}
+            >
               <Zap size={16} className="text-white" />
             </div>
             <span className="font-bold text-lg text-white">
-              Webcraft<span className="text-cyan-400">Studio</span>
+              Webcraft<span style={{ color: '#00d4ff' }}>Studio</span>
             </span>
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-1">
             {navLinks.map(link => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  'px-3 py-2 text-sm rounded-lg transition-all duration-200',
+                  'px-3 py-2 text-sm rounded-lg transition-all duration-200 font-medium',
                   pathname === link.href
-                    ? 'text-cyan-400 bg-cyan-500/10'
-                    : 'text-gray-400 hover:text-white hover:bg-white/10'
+                    ? 'text-[#00d4ff]'
+                    : 'text-[#b0b5c3] hover:text-white'
                 )}
+                style={pathname === link.href ? { background: 'rgba(0, 212, 255, 0.08)' } : {}}
               >
                 {link.label}
               </Link>
@@ -67,7 +82,7 @@ export default function Navbar() {
           </div>
 
           {/* Actions */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-3">
             <ThemeToggle />
             <Link href="/contact">
               <Button size="sm">Get Started</Button>
@@ -75,11 +90,12 @@ export default function Navbar() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="flex md:hidden items-center gap-2">
+          <div className="flex lg:hidden items-center gap-2">
             <ThemeToggle />
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-all"
+              className="p-2 rounded-lg transition-all"
+              style={{ color: '#b0b5c3' }}
             >
               {isOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -89,18 +105,26 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {isOpen && (
-        <div className="md:hidden bg-gray-950/95 backdrop-blur-xl border-b border-white/10">
+        <div
+          className="lg:hidden"
+          style={{
+            background: 'rgba(10, 14, 39, 0.98)',
+            backdropFilter: 'blur(20px)',
+            borderBottom: '1px solid rgba(26, 31, 58, 0.8)',
+          }}
+        >
           <div className="px-4 py-4 space-y-1">
             {navLinks.map(link => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  'block px-4 py-3 rounded-lg text-sm transition-all duration-200',
+                  'block px-4 py-3 rounded-lg text-sm transition-all duration-200 font-medium',
                   pathname === link.href
-                    ? 'text-cyan-400 bg-cyan-500/10'
-                    : 'text-gray-400 hover:text-white hover:bg-white/10'
+                    ? 'text-[#00d4ff]'
+                    : 'text-[#b0b5c3] hover:text-white'
                 )}
+                style={pathname === link.href ? { background: 'rgba(0, 212, 255, 0.08)' } : {}}
               >
                 {link.label}
               </Link>

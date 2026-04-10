@@ -3,13 +3,13 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 
 const stats = [
-  { value: 50, suffix: '+', label: 'Projects Delivered' },
-  { value: 98, suffix: '%', label: 'Client Satisfaction' },
-  { value: 5, suffix: 'x', label: 'Average ROI' },
-  { value: 3, suffix: 'yrs', label: 'In Business' },
+  { value: 50, suffix: '+', label: 'Projects Delivered', color: '#00d4ff' },
+  { value: 98, suffix: '%', label: 'Client Satisfaction', color: '#64ff6b' },
+  { value: 5, suffix: 'x', label: 'Average ROI', color: '#00d4ff' },
+  { value: 3, suffix: 'yrs', label: 'In Business', color: '#64ff6b' },
 ];
 
-function Counter({ value, suffix }: { value: number; suffix: string }) {
+function Counter({ value, suffix, color }: { value: number; suffix: string; color: string }) {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
@@ -33,7 +33,7 @@ function Counter({ value, suffix }: { value: number; suffix: string }) {
   }, [inView, value]);
 
   return (
-    <span ref={ref} className="text-5xl font-extrabold text-white tabular-nums">
+    <span ref={ref} className="text-5xl font-extrabold tabular-nums" style={{ color }}>
       {count}{suffix}
     </span>
   );
@@ -41,7 +41,14 @@ function Counter({ value, suffix }: { value: number; suffix: string }) {
 
 export default function Stats() {
   return (
-    <section className="py-20 bg-gray-900/50 border-y border-white/5">
+    <section
+      className="py-20"
+      style={{
+        background: 'rgba(26, 31, 58, 0.4)',
+        borderTop: '1px solid rgba(26, 31, 58, 0.8)',
+        borderBottom: '1px solid rgba(26, 31, 58, 0.8)',
+      }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map((stat, i) => (
@@ -53,8 +60,8 @@ export default function Stats() {
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className="text-center"
             >
-              <Counter value={stat.value} suffix={stat.suffix} />
-              <p className="text-gray-400 text-sm mt-2">{stat.label}</p>
+              <Counter value={stat.value} suffix={stat.suffix} color={stat.color} />
+              <p className="text-sm mt-2" style={{ color: '#b0b5c3' }}>{stat.label}</p>
             </motion.div>
           ))}
         </div>

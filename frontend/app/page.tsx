@@ -15,16 +15,30 @@ export default function HomePage() {
       <CaseStudies />
       <Testimonials />
       {/* CTA Section */}
-      <section className="py-24 bg-gray-950">
+      <section className="py-24" style={{ background: '#0a0e27' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="bg-gradient-to-r from-cyan-500/10 to-violet-500/10 border border-white/10 rounded-3xl p-12">
+          <div
+            className="rounded-3xl p-12"
+            style={{
+              background: 'linear-gradient(135deg, rgba(0,212,255,0.08) 0%, rgba(100,255,107,0.08) 100%)',
+              border: '1px solid rgba(0,212,255,0.15)',
+              boxShadow: '0 20px 60px rgba(0, 212, 255, 0.1)',
+            }}
+          >
             <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
               Ready to Build Something{' '}
-              <span className="bg-gradient-to-r from-cyan-400 to-violet-500 bg-clip-text text-transparent">
+              <span
+                style={{
+                  background: 'linear-gradient(135deg, #00d4ff 0%, #64ff6b 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
                 Amazing?
               </span>
             </h2>
-            <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
+            <p className="text-lg mb-8 max-w-xl mx-auto" style={{ color: '#b0b5c3' }}>
               Let&apos;s transform your vision into a high-performing digital experience.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
