@@ -1,1 +1,6 @@
-{\n  "version": 2,\n  "name": "webcraft-v3",\n  "builds": [\n    {\n      "src": "next.config.js",\n      "use": "@vercel/next"\n    }\n  ],\n  "routes": [\n    {\n      "src": "/(.*)",\n      "dest": "/$1"\n    }\n  ],\n  "env": {\n    "CUSTOM_ENV_VARIABLE": "your_value_here",\n    "ANOTHER_ENV_VARIABLE": "another_value_here"\n  },\n  "rootDirectory": "/"\n}
+{
+  "buildCommand": "next build",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "nodejs": "18.x"
+}
