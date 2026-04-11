@@ -92,13 +92,13 @@ export default function Services() {
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-sm font-medium mb-4">
             What We Do
           </div>
-          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+          <h2 className="text-h2-mobile md:text-h2 font-poppins font-bold tracking-tight text-white mb-4">
             Services That{' '}
             <span className="bg-gradient-to-r from-cyan-400 to-violet-500 bg-clip-text text-transparent">
               Drive Results
             </span>
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+          <p className="text-gray-400 max-w-2xl mx-auto text-body-lg font-inter">
             From concept to deployment, we provide end-to-end digital solutions tailored to your business goals.
           </p>
         </motion.div>
@@ -147,8 +147,8 @@ export default function Services() {
                   <service.icon className={service.color} size={22} />
                 </motion.div>
 
-                <h3 className="text-white font-bold text-lg mb-2 group-hover:text-white transition-colors">{service.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed mb-5 group-hover:text-gray-300 transition-colors">{service.description}</p>
+                <h3 className="text-white font-poppins font-bold text-h4-mobile mb-2 group-hover:text-white transition-colors">{service.title}</h3>
+                <p className="text-gray-400 text-body-sm font-inter leading-relaxed mb-5 group-hover:text-gray-300 transition-colors">{service.description}</p>
 
                 {/* Learn more */}
                 <div className={`flex items-center gap-1.5 text-sm font-medium ${service.color} opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0`}>

@@ -57,7 +57,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span className="block text-[3.5rem] sm:text-6xl lg:text-7xl xl:text-[6rem] font-black tracking-tight text-white leading-[1.1]">
+            <span className="block text-h1-mobile md:text-h1 font-poppins font-black tracking-tight-sm text-white leading-[1.1]">
               We Build
             </span>
           </motion.div>
@@ -68,7 +68,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span className="block text-[3.5rem] sm:text-6xl lg:text-7xl xl:text-[6rem] font-black tracking-tight leading-[1.1] bg-gradient-to-r from-cyan-400 to-cyan-300 bg-clip-text text-transparent">
+            <span className="block text-h1-mobile md:text-h1 font-poppins font-black tracking-tight-sm leading-[1.1] bg-gradient-to-r from-cyan-400 to-cyan-300 bg-clip-text text-transparent">
               High-Converting Websites
             </span>
           </motion.div>
@@ -79,7 +79,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span className="block text-[3.5rem] sm:text-6xl lg:text-7xl xl:text-[6rem] font-black tracking-tight leading-[1.1]">
+            <span className="block text-h1-mobile md:text-h1 font-poppins font-black tracking-tight-sm leading-[1.1]">
               <span className="text-white">for </span>
               <span className="relative inline-block">
                 <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
@@ -101,7 +101,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="text-base sm:text-lg lg:text-[22px] text-gray-300 max-w-2xl mx-auto mb-12 leading-relaxed font-normal"
+          className="text-body-base md:text-body-lg font-inter text-gray-300 max-w-2xl mx-auto mb-12 leading-relaxed font-normal"
         >
           From stunning landing pages to complex web applications — we craft digital experiences
           that captivate your audience and drive measurable business results.
@@ -157,7 +157,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 1.2 }}
-          className="flex flex-wrap justify-center gap-x-6 gap-y-3 text-gray-400 text-[14px] pb-4"
+          className="flex flex-wrap justify-center gap-x-6 gap-y-3 text-gray-400 text-body-sm pb-4"
         >
           {trustBadges.map(({ text, Icon, color }) => (
             <div key={text} className="flex items-center gap-1.5">

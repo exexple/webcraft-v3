@@ -66,13 +66,13 @@ export default function CaseStudies() {
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-400 text-sm font-medium mb-4">
             Our Work
           </div>
-          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+          <h2 className="text-h2-mobile md:text-h2 font-poppins font-bold tracking-tight text-white mb-4">
             Results That{' '}
             <span className="bg-gradient-to-r from-cyan-400 to-violet-500 bg-clip-text text-transparent">
               Speak Volumes
             </span>
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+          <p className="text-gray-400 max-w-2xl mx-auto text-body-lg font-inter">
             Every project is an opportunity to push boundaries and deliver exceptional outcomes.
           </p>
         </motion.div>
@@ -104,10 +104,10 @@ export default function CaseStudies() {
                 {/* Header */}
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <span className={`text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full border ${study.categoryColor}`}>
+                    <span className={`text-body-xs font-space-mono font-semibold uppercase tracking-looser px-2.5 py-1 rounded-full border ${study.categoryColor}`}>
                       {study.category}
                     </span>
-                    <h3 className="text-xl font-bold text-white mt-3">{study.title}</h3>
+                    <h3 className="text-h4-mobile font-poppins font-bold text-white mt-3">{study.title}</h3>
                   </div>
                   <motion.div
                     whileHover={{ rotate: 45 }}
@@ -118,7 +118,7 @@ export default function CaseStudies() {
                   </motion.div>
                 </div>
 
-                <p className="text-gray-400 text-sm leading-relaxed mb-6 group-hover:text-gray-300 transition-colors">{study.description}</p>
+                <p className="text-gray-400 text-body-sm font-inter leading-relaxed mb-6 group-hover:text-gray-300 transition-colors">{study.description}</p>
 
                 {/* Metric badges */}
                 <div className="flex gap-4 flex-wrap">
@@ -133,9 +133,9 @@ export default function CaseStudies() {
                     >
                       <div className="flex items-center gap-1.5 mb-1">
                         <metric.icon size={12} className={metric.color} />
-                        <span className="text-gray-500 text-xs">{metric.label}</span>
+                        <span className="text-gray-500 text-body-xs font-inter">{metric.label}</span>
                       </div>
-                      <div className={`text-xl font-bold ${metric.color}`}>{metric.value}</div>
+                      <div className={`text-h5-mobile font-poppins font-bold ${metric.color}`}>{metric.value}</div>
                     </motion.div>
                   ))}
                 </div>
