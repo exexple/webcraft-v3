@@ -10,7 +10,7 @@ const contactSchema = z.object({
 });
 
 export async function contactRoutes(fastify: FastifyInstance) {
-  fastify.post('/api/contact', async (request, reply) => {
+  fastify.post('/contact', async (request, reply) => {
     try {
       const body = contactSchema.parse(request.body);
       const { data, error } = await supabase.from('leads').insert([{
