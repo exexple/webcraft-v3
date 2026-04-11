@@ -45,7 +45,7 @@ export default function AdminPage() {
     setLoading(true);
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
       const res = await fetch(`${apiUrl}/api/leads?limit=100`, {
         headers: { Authorization: `Bearer ${session?.access_token}` },
       });
@@ -69,7 +69,7 @@ export default function AdminPage() {
 
   const handleStatusUpdate = async (id: string, status: string) => {
     const { data: { session } } = await supabase.auth.getSession();
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     await fetch(`${apiUrl}/api/leads/${id}`, {
       method: 'PATCH',
       headers: {
