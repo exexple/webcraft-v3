@@ -29,10 +29,10 @@ async function start() {
     timeWindow: '1 minute',
   });
 
-  await fastify.register(contactRoutes);
-  await fastify.register(leadsRoutes);
-  await fastify.register(interactionsRoutes);
-  await fastify.register(authRoutes);
+  await fastify.register(contactRoutes, { prefix: '/api' });
+  await fastify.register(leadsRoutes, { prefix: '/api' });
+  await fastify.register(interactionsRoutes, { prefix: '/api' });
+  await fastify.register(authRoutes, { prefix: '/api' });
 
   fastify.get('/health', async () => ({ status: 'ok', timestamp: new Date().toISOString() }));
 
