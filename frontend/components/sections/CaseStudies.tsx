@@ -1,7 +1,7 @@
 'use client';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, TrendingUp, Clock, Users, DollarSign } from 'lucide-react';
-import { staggerContainer, fadeInUp } from '@/lib/animations';
+import { staggerScrollVariant, slideUpOnScrollVariant } from '@/lib/animations';
 
 const caseStudies = [
   {
@@ -78,16 +78,16 @@ export default function CaseStudies() {
         </motion.div>
 
         <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
+          variants={staggerScrollVariant}
+          initial="initial"
+          whileInView="whileInView"
+          viewport={{ once: true, margin: '0px 0px -100px 0px' }}
           className="grid grid-cols-1 md:grid-cols-3 gap-6"
         >
           {caseStudies.map((study, i) => (
             <motion.div
               key={study.title}
-              variants={fadeInUp}
+              variants={slideUpOnScrollVariant}
               whileHover={{
                 y: -8,
                 boxShadow: `0 25px 70px ${study.hoverGlow}`,

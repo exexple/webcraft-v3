@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle2, Star, TrendingUp, Globe } from 'lucide-react';
 import Button from '@/components/ui/Button';
-import { blobAnimation } from '@/lib/animations';
+import { blobAnimation, staggerContainerVariant, slideUpVariant } from '@/lib/animations';
 import { useRef } from 'react';
 
 const trustBadges = [
@@ -47,38 +47,29 @@ export default function Hero() {
 
       <motion.div
         style={{ y, opacity }}
+        variants={staggerContainerVariant}
+        initial="initial"
+        animate="animate"
         className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20 pb-16"
       >
         {/* Stage 1 — HEADLINE (dominant) */}
         <div className="mb-8 space-y-1">
           {/* Line 1: We Build */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0, ease: [0.22, 1, 0.36, 1] }}
-          >
+          <motion.div variants={slideUpVariant}>
             <span className="block text-h1-mobile md:text-h1 font-poppins font-black tracking-tight-sm text-white leading-[1.1]">
               We Build
             </span>
           </motion.div>
 
           {/* Line 2: High-Converting Websites — cyan accent */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-          >
+          <motion.div variants={slideUpVariant}>
             <span className="block text-h1-mobile md:text-h1 font-poppins font-black tracking-tight-sm leading-[1.1] bg-gradient-to-r from-cyan-400 to-cyan-300 bg-clip-text text-transparent">
               High-Converting Websites
             </span>
           </motion.div>
 
           {/* Line 3: for Modern Brands — violet accent */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
-          >
+          <motion.div variants={slideUpVariant}>
             <span className="block text-h1-mobile md:text-h1 font-poppins font-black tracking-tight-sm leading-[1.1]">
               <span className="text-white">for </span>
               <span className="relative inline-block">
@@ -98,9 +89,7 @@ export default function Hero() {
 
         {/* Stage 2 — SUBHEADLINE (secondary) */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          variants={slideUpVariant}
           className="text-body-base md:text-body-lg font-inter text-gray-300 max-w-2xl mx-auto mb-12 leading-relaxed font-normal"
         >
           From stunning landing pages to complex web applications — we craft digital experiences
@@ -109,9 +98,7 @@ export default function Hero() {
 
         {/* Stage 3 — CTA BUTTONS */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          variants={slideUpVariant}
           className="flex flex-col sm:flex-row gap-4 justify-center mb-8"
         >
           {/* Primary CTA */}
@@ -154,9 +141,7 @@ export default function Hero() {
 
         {/* Stage 4 — TRUST INDICATORS (supporting proof) */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 1.2 }}
+          variants={slideUpVariant}
           className="flex flex-wrap justify-center gap-x-6 gap-y-3 text-gray-400 text-body-sm pb-4"
         >
           {trustBadges.map(({ text, Icon, color }) => (

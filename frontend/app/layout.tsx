@@ -3,6 +3,7 @@ import { Poppins, Inter, Space_Mono } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
 import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/ui/Footer';
+import PageTransition from '@/components/ui/PageTransition';
 import './globals.css';
 
 const poppins = Poppins({
@@ -59,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${poppins.variable} ${inter.variable} ${spaceMono.variable} bg-gray-950 text-white antialiased font-inter`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <Navbar />
-          <main>{children}</main>
+          <PageTransition>{children}</PageTransition>
           <Footer />
         </ThemeProvider>
       </body>

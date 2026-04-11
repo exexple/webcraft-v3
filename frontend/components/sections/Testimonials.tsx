@@ -1,7 +1,7 @@
 'use client';
 import { motion } from 'framer-motion';
 import { Star, Quote } from 'lucide-react';
-import { staggerContainer, fadeInUp } from '@/lib/animations';
+import { staggerScrollVariant, slideUpOnScrollVariant } from '@/lib/animations';
 
 const testimonials = [
   {
@@ -68,20 +68,21 @@ export default function Testimonials() {
         </motion.div>
 
         <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
+          variants={staggerScrollVariant}
+          initial="initial"
+          whileInView="whileInView"
+          viewport={{ once: true, margin: '0px 0px -100px 0px' }}
           className="grid grid-cols-1 md:grid-cols-3 gap-6"
         >
           {testimonials.map((t, i) => (
             <motion.div
               key={t.name}
-              variants={fadeInUp}
+              variants={slideUpOnScrollVariant}
               whileHover={{
-                y: -6,
-                boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
-                transition: { duration: 0.3 },
+                scale: 1.02,
+                y: -4,
+                boxShadow: '0 20px 40px rgba(6, 182, 212, 0.1)',
+                transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
               }}
               className="group bg-gray-900 border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-colors duration-300 relative overflow-hidden"
             >
