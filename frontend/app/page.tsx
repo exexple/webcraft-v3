@@ -33,7 +33,7 @@ export default function HomePage() {
                   Amazing?
                 </span>
               </h2>
-              <p className="text-gray-400 text-lg mb-3 max-w-xl mx-auto">
+              <p className="text-gray-400 text-lg mb-4 max-w-xl mx-auto">
                 Let&apos;s transform your vision into a high-performing digital experience.
               </p>
               <p className="text-cyan-400/70 text-sm mb-8 font-medium">

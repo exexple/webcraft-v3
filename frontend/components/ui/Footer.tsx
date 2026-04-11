@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { Zap, Globe, ExternalLink, Code, Share2 } from 'lucide-react';
+import { Zap, Globe, AtSign, Terminal, Camera } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const footerLinks = {
@@ -20,9 +20,9 @@ const footerLinks = {
 
 const socials = [
   { icon: Globe, href: '#', label: 'Twitter' },
-  { icon: ExternalLink, href: '#', label: 'LinkedIn' },
-  { icon: Code, href: '#', label: 'GitHub' },
-  { icon: Share2, href: '#', label: 'Instagram' },
+  { icon: AtSign, href: '#', label: 'LinkedIn' },
+  { icon: Terminal, href: '#', label: 'GitHub' },
+  { icon: Camera, href: '#', label: 'Instagram' },
 ];
 
 export default function Footer() {
