@@ -99,7 +99,7 @@ export default function PricingPage() {
                 )}
                 <h3 className="text-h4 font-bold text-white mb-spacing-md font-poppins">{plan.name}</h3>
                 <p className="text-gray-400 text-sm mb-spacing-xl">{plan.description}</p>
-                <div className="text-h2 font-extrabold text-cyan-400 mb-spacing-md font-poppins">{plan.price}</div>
+                <div className="text-h2 font-extrabold text-cyan-400 mb-spacing-xl font-poppins">{plan.price}</div>
                 <ul className="space-y-spacing-md mb-spacing-xl">
                   {plan.features.map(feature => (
                     <li key={feature} className="flex items-center gap-spacing-md text-sm text-gray-400">
