@@ -17,7 +17,10 @@ const fastify = Fastify({
 
 async function start() {
   await fastify.register(cors, {
-    origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+    origin: [
+  'http://localhost:3000',
+  'https://webcraft-v3-b7yx.vercel.app/' // 👈 your frontend URL
+],
     methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
   });
