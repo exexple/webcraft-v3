@@ -1,6 +1,7 @@
 'use client';
 import { motion } from 'framer-motion';
 import { Star, Quote } from 'lucide-react';
+import { staggerContainer, fadeInUp } from '@/lib/animations';
 
 const testimonials = [
   {
@@ -9,6 +10,9 @@ const testimonials = [
     content: 'Webcraft Studio transformed our online presence completely. Our conversion rate tripled within the first month after launch. The attention to detail and performance optimization is outstanding.',
     rating: 5,
     avatar: 'SM',
+    gradient: 'from-cyan-500 to-violet-600',
+    company: 'TechFlow',
+    result: '3x Conversion Rate',
   },
   {
     name: 'James Rodriguez',
@@ -16,6 +20,9 @@ const testimonials = [
     content: 'Working with Webcraft was an incredible experience. They understood our brand vision perfectly and delivered a website that exceeded every expectation. Highly recommend!',
     rating: 5,
     avatar: 'JR',
+    gradient: 'from-violet-500 to-pink-600',
+    company: 'Luxe Commerce',
+    result: '+$180k Revenue',
   },
   {
     name: 'Priya Sharma',
@@ -23,22 +30,31 @@ const testimonials = [
     content: 'The technical expertise at Webcraft Studio is second to none. They built our complex fintech dashboard with flawless execution, on time and on budget.',
     rating: 5,
     avatar: 'PS',
+    gradient: 'from-green-500 to-cyan-600',
+    company: 'FinanceHub',
+    result: '99.9% Uptime',
   },
 ];
 
 export default function Testimonials() {
   return (
-    <section className="py-24 bg-gray-900/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-24 bg-gray-900/30 relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-cyan-500/3 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-violet-500/3 rounded-full blur-3xl" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="text-center mb-16"
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-yellow-500/30 bg-yellow-500/10 text-yellow-400 text-sm font-medium mb-4">
-            Client Love
+            ⭐ Client Love
           </div>
           <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
             What Our Clients{' '}
@@ -46,27 +62,68 @@ export default function Testimonials() {
               Say
             </span>
           </h2>
+          <p className="text-gray-400 max-w-xl mx-auto">
+            Don&apos;t just take our word for it. Here&apos;s what our clients have to say.
+          </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+        >
           {testimonials.map((t, i) => (
             <motion.div
               key={t.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="bg-gray-900 border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-300"
+              variants={fadeInUp}
+              whileHover={{
+                y: -6,
+                boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
+                transition: { duration: 0.3 },
+              }}
+              className="group bg-gray-900 border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-colors duration-300 relative overflow-hidden"
             >
-              <Quote size={24} className="text-cyan-400/50 mb-4" />
+              {/* Quote icon with animation */}
+              <motion.div
+                initial={{ opacity: 0.2, scale: 1 }}
+                whileHover={{ opacity: 0.5, scale: 1.1 }}
+                transition={{ duration: 0.3 }}
+                className="absolute top-4 right-4"
+              >
+                <Quote size={40} className="text-cyan-400/20 group-hover:text-cyan-400/30 transition-colors" />
+              </motion.div>
+
+              {/* Stars */}
               <div className="flex gap-1 mb-4">
                 {Array.from({ length: t.rating }).map((_, j) => (
-                  <Star key={j} size={14} className="text-yellow-400 fill-yellow-400" />
+                  <motion.div
+                    key={j}
+                    initial={{ opacity: 0, scale: 0 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: i * 0.1 + j * 0.06 }}
+                  >
+                    <Star size={14} className="text-yellow-400 fill-yellow-400" />
+                  </motion.div>
                 ))}
               </div>
-              <p className="text-gray-400 text-sm leading-relaxed mb-6">{t.content}</p>
+
+              {/* Testimonial text */}
+              <p className="text-gray-300 text-sm leading-relaxed mb-6 group-hover:text-white transition-colors duration-300">
+                &ldquo;{t.content}&rdquo;
+              </p>
+
+              {/* Result badge */}
+              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-medium mb-5">
+                <div className="w-1.5 h-1.5 rounded-full bg-green-400" />
+                {t.result}
+              </div>
+
+              {/* Author */}
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-violet-600 flex items-center justify-center text-white text-sm font-bold">
+                <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${t.gradient} flex items-center justify-center text-white text-sm font-bold shadow-lg flex-shrink-0`}>
                   {t.avatar}
                 </div>
                 <div>
@@ -76,7 +133,26 @@ export default function Testimonials() {
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
+
+        {/* Overall rating display */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mt-16 text-center"
+        >
+          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-gray-900 border border-white/10">
+            <div className="flex gap-1">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} size={16} className="text-yellow-400 fill-yellow-400" />
+              ))}
+            </div>
+            <span className="text-white font-semibold">5.0 out of 5</span>
+            <span className="text-gray-500 text-sm">based on 50+ reviews</span>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
