@@ -85,5 +85,6 @@ See [docs/API.md](docs/API.md) for full API documentation.
 - Email: hello@webcraftstudio.com
 
 ---
+update
 
 Built with ❤️ by Webcraft Studio
