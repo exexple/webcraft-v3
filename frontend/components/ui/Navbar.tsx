@@ -7,6 +7,7 @@ import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
 import Button from './Button';
 import { cn } from '@/lib/utils';
+import { Container } from './Container';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -51,8 +52,7 @@ export default function Navbar() {
           scrolled ? 'border-b border-white/10 shadow-lg shadow-black/20' : ''
         )}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+        <Container size="xl" className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 group">
               <motion.div
@@ -132,8 +132,7 @@ export default function Navbar() {
                 </AnimatePresence>
               </button>
             </div>
-          </div>
-        </div>
+        </Container>
 
         {/* Mobile menu */}
         <AnimatePresence>

@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { Container } from '@/components/ui/Container';
 import { staggerScrollVariant, slideUpOnScrollVariant } from '@/lib/animations';
 
 const stats = [
@@ -42,14 +43,14 @@ function Counter({ value, suffix }: { value: number; suffix: string }) {
 
 export default function Stats() {
   return (
-    <section className="py-20 bg-gray-900/50 border-y border-white/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-section-normal bg-gray-900/50 border-y border-white/10">
+      <Container size="xl">
         <motion.div
           variants={staggerScrollVariant}
           initial="initial"
           whileInView="whileInView"
           viewport={{ once: true }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-8"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-spacing-xl"
         >
           {stats.map((stat) => (
             <motion.div
@@ -58,11 +59,11 @@ export default function Stats() {
               className="text-center"
             >
               <Counter value={stat.value} suffix={stat.suffix} />
-              <p className="text-gray-400 text-sm mt-2">{stat.label}</p>
+              <p className="text-gray-400 text-sm mt-spacing-md">{stat.label}</p>
             </motion.div>
           ))}
         </motion.div>
-      </div>
+      </Container>
     </section>
   );
 }

@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { Zap, Globe, AtSign, Terminal, Camera } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Container } from './Container';
 
 const footerLinks = {
   Company: [
@@ -34,8 +35,8 @@ export default function Footer() {
       {/* Background decoration */}
       <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-cyan-500/3 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+      <Container size="xl" className="py-section-spacious relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-spacing-2xl mb-spacing-3xl">
           {/* Brand */}
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4 group w-fit">
@@ -77,8 +78,8 @@ export default function Footer() {
           {/* Links */}
           {Object.entries(footerLinks).map(([title, links]) => (
             <div key={title}>
-              <h3 className="text-white font-semibold text-sm mb-4">{title}</h3>
-              <ul className="space-y-3">
+              <h3 className="text-white font-semibold text-sm mb-spacing-lg">{title}</h3>
+              <ul className="space-y-spacing-md">
                 {links.map(link => (
                   <li key={link.label}>
                     <Link
@@ -98,7 +99,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="pt-spacing-2xl border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-gray-500 text-sm">
             © {new Date().getFullYear()} Webcraft Studio. All rights reserved.
           </p>
@@ -113,7 +114,7 @@ export default function Footer() {
             </a>
           </div>
         </div>
-      </div>
+      </Container>
     </footer>
   );
 }
