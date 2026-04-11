@@ -11,7 +11,7 @@ const loginSchema = z.object({
 });
 
 export async function authRoutes(fastify: FastifyInstance) {
-  fastify.post('/api/auth/login', async (request, reply) => {
+  fastify.post('/auth/login', async (request, reply) => {
     try {
       const body = loginSchema.parse(request.body);
       const supabase = createClient(
