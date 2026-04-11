@@ -10,7 +10,7 @@ const interactionSchema = z.object({
 });
 
 export async function interactionsRoutes(fastify: FastifyInstance) {
-  fastify.post('/api/interactions', { preHandler: verifyAuth }, async (request, reply) => {
+  fastify.post('/interactions', { preHandler: verifyAuth }, async (request, reply) => {
     try {
       const body = interactionSchema.parse(request.body);
       const { data, error } = await supabase.from('interactions').insert([body]).select().single();
