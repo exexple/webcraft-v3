@@ -18,7 +18,7 @@ const fastify = Fastify({
 async function start() {
   await fastify.register(cors, {
     origin: [
-  'https://webcraft-v3-b7yx.vercel.app/' // 👈 your frontend URL
+  'https://webcraft-v3-b7yx.vercel.app' // 👈 your frontend URL
 ],
     methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
