@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { staggerScrollVariant, slideUpOnScrollVariant } from '@/lib/animations';
 
 const stats = [
   { value: 50, suffix: '+', label: 'Projects Delivered' },
@@ -43,21 +44,24 @@ export default function Stats() {
   return (
     <section className="py-20 bg-gray-900/50 border-y border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-          {stats.map((stat, i) => (
+        <motion.div
+          variants={staggerScrollVariant}
+          initial="initial"
+          whileInView="whileInView"
+          viewport={{ once: true }}
+          className="grid grid-cols-2 lg:grid-cols-4 gap-8"
+        >
+          {stats.map((stat) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
+              variants={slideUpOnScrollVariant}
               className="text-center"
             >
               <Counter value={stat.value} suffix={stat.suffix} />
               <p className="text-gray-400 text-sm mt-2">{stat.label}</p>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

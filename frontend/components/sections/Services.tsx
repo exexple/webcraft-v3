@@ -1,7 +1,7 @@
 'use client';
 import { motion } from 'framer-motion';
 import { Globe, Smartphone, Zap, BarChart3, Shield, Palette, ArrowRight } from 'lucide-react';
-import { staggerContainer, fadeInUp } from '@/lib/animations';
+import { staggerScrollVariant, slideUpOnScrollVariant } from '@/lib/animations';
 
 const services = [
   {
@@ -104,16 +104,16 @@ export default function Services() {
         </motion.div>
 
         <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
+          variants={staggerScrollVariant}
+          initial="initial"
+          whileInView="whileInView"
+          viewport={{ once: true, margin: '0px 0px -100px 0px' }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {services.map((service) => (
             <motion.div
               key={service.title}
-              variants={fadeInUp}
+              variants={slideUpOnScrollVariant}
               whileHover={{
                 y: -8,
                 boxShadow: `0 20px 60px ${service.glow}`,
