@@ -29,7 +29,7 @@ export default function Hero() {
           variants={blobAnimation}
           initial="hidden"
           animate="visible"
-          className="absolute bottom-1/4 right-1/5 w-[500px] h-[500px] bg-violet-600/8 rounded-full blur-3xl animate-blob [animation-delay:4s]"
+          className="absolute bottom-1/4 right-1/5 w-[500px] h-[500px] bg-violet-600/8 rounded-full blur-3xl"
         />
         <motion.div
           animate={{
