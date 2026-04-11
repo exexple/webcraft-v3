@@ -9,7 +9,7 @@ const updateLeadSchema = z.object({
 });
 
 export async function leadsRoutes(fastify: FastifyInstance) {
-  fastify.get('/api/leads', { preHandler: verifyAuth }, async (request, reply) => {
+  fastify.get('/leads', { preHandler: verifyAuth }, async (request, reply) => {
     try {
       const query = request.query as { status?: string; search?: string; page?: string; limit?: string };
       let dbQuery = supabase.from('leads').select('*', { count: 'exact' }).is('deleted_at', null).order('created_at', { ascending: false });
