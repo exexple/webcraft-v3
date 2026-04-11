@@ -56,13 +56,13 @@ export default function Testimonials() {
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-yellow-500/30 bg-yellow-500/10 text-yellow-400 text-sm font-medium mb-4">
             ⭐ Client Love
           </div>
-          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+          <h2 className="text-h2-mobile md:text-h2 font-poppins font-bold tracking-tight text-white mb-4">
             What Our Clients{' '}
             <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
               Say
             </span>
           </h2>
-          <p className="text-gray-400 max-w-xl mx-auto">
+          <p className="text-gray-400 max-w-xl mx-auto text-body-base font-inter">
             Don&apos;t just take our word for it. Here&apos;s what our clients have to say.
           </p>
         </motion.div>
@@ -111,7 +111,7 @@ export default function Testimonials() {
               </div>
 
               {/* Testimonial text */}
-              <p className="text-gray-300 text-sm leading-relaxed mb-6 group-hover:text-white transition-colors duration-300">
+              <p className="text-gray-300 text-body-sm font-inter leading-relaxed mb-6 group-hover:text-white transition-colors duration-300 italic">
                 &ldquo;{t.content}&rdquo;
               </p>
 
@@ -127,8 +127,8 @@ export default function Testimonials() {
                   {t.avatar}
                 </div>
                 <div>
-                  <div className="text-white font-semibold text-sm">{t.name}</div>
-                  <div className="text-gray-500 text-xs">{t.role}</div>
+                  <div className="text-white font-poppins font-semibold text-body-sm">{t.name}</div>
+                  <div className="text-gray-500 text-body-xs font-inter">{t.role}</div>
                 </div>
               </div>
             </motion.div>

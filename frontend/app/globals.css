@@ -17,13 +17,85 @@
 }
 
 html {
+  font-size: 16px;
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: Inter, system-ui, sans-serif;
+  font-family: var(--font-inter), Inter, system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Global heading styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-poppins), Poppins, system-ui, sans-serif;
+  color: white;
+}
+
+h1 {
+  font-size: 56px;
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: 40px;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-size: 32px;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+h4 {
+  font-size: 24px;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+h5 {
+  font-size: 22px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+h6 {
+  font-size: 18px;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+@media (min-width: 768px) {
+  h1 { font-size: 96px; }
+  h2 { font-size: 64px; }
+  h3 { font-size: 48px; }
+  h4 { font-size: 36px; }
+  h5 { font-size: 28px; }
+  h6 { font-size: 22px; }
+}
+
+/* Links */
+a {
+  transition-property: color, background-color, border-color, box-shadow, transform, opacity;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+}
+
+/* Strong/Bold */
+strong, b {
+  font-weight: 600;
 }
 
 /* Scrollbar styling */
@@ -86,6 +158,30 @@ body {
   .card-hover:hover {
     transform: translateY(-6px);
     box-shadow: 0 20px 60px rgba(6, 182, 212, 0.12);
+  }
+
+  /* Heading spacing utilities */
+  .heading-spacing {
+    margin-bottom: 1.5rem;
+  }
+  .heading-spacing-lg {
+    margin-bottom: 2rem;
+  }
+
+  /* Paragraph spacing utilities */
+  .text-spacing {
+    margin-bottom: 1rem;
+  }
+  .text-spacing-lg {
+    margin-bottom: 1.5rem;
+  }
+
+  /* Section spacing utilities */
+  .section-spacing {
+    padding: 4rem 0;
+  }
+  .section-spacing-lg {
+    padding: 6rem 0;
   }
 }
 
@@ -175,8 +271,23 @@ input:focus, textarea:focus, select:focus {
 }
 
 /* Smooth transitions for all interactive elements */
-a, button {
+button {
   transition-property: color, background-color, border-color, box-shadow, transform, opacity;
   transition-duration: 200ms;
   transition-timing-function: ease;
+}
+
+/* Print styles */
+@media print {
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+    color: #000;
+    background: #fff;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    color: #000;
+  }
 }
