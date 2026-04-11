@@ -178,11 +178,25 @@ strong, b {
 
   /* Section spacing utilities */
   .section-spacing {
-    padding: 4rem 0;
+    @apply py-section-spacious;
+  }
+  .section-spacing-compact {
+    @apply py-section-compact;
   }
   .section-spacing-lg {
     padding: 6rem 0;
   }
+
+  /* Container padding */
+  .container-px {
+    @apply px-4 md:px-6 lg:px-8;
+  }
+
+  /* Grid gap utilities */
+  .grid-gap-sm { @apply gap-spacing-sm; }
+  .grid-gap-md { @apply gap-spacing-md; }
+  .grid-gap-lg { @apply gap-spacing-lg; }
+  .grid-gap-xl { @apply gap-spacing-xl; }
 }
 
 /* Keyframe animations */

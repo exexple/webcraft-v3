@@ -46,6 +46,28 @@ const config: Config = {
         "looser": "0.1em",
       },
       spacing: {
+        // Micro spacing (internal elements) — 8px base unit
+        "spacing-xs": "8px",
+        "spacing-sm": "12px",
+        "spacing-md": "16px",
+        "spacing-lg": "24px",
+        "spacing-xl": "32px",
+        "spacing-2xl": "48px",
+        "spacing-3xl": "64px",
+        "spacing-4xl": "96px",
+
+        // Section spacing
+        "section-compact": "48px",
+        "section-normal": "64px",
+        "section-spacious": "96px",
+        "section-ultra": "128px",
+
+        // Container padding
+        "container-px-mobile": "16px",
+        "container-px-tablet": "24px",
+        "container-px-desktop": "32px",
+
+        // Legacy section spacing (kept for backward compatibility)
         "section-xs": "2rem",
         "section-sm": "3rem",
         "section-md": "4rem",
