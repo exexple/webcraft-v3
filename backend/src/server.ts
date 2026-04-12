@@ -1,7 +1,7 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import rateLimit from '@fastify/rate-limit';
-import jwt from '@fastify/jwt'; // ✅ ADD THIS
+import jwt from '@fastify/jwt'; 
 import dotenv from 'dotenv';
 
 import { contactRoutes } from './routes/contact';
@@ -18,7 +18,7 @@ const fastify = Fastify({
 });
 
 async function start() {
-  // ✅ CORS
+  //  CORS
   await fastify.register(cors, {
     origin: [
       'https://webcraft-v3-b7yx.vercel.app' // ❗ REMOVE trailing slash
@@ -27,24 +27,24 @@ async function start() {
     credentials: true,
   });
 
-  // ✅ RATE LIMIT
+  //  RATE LIMIT
   await fastify.register(rateLimit, {
     max: 100,
     timeWindow: '1 minute',
   });
 
-  // ✅ JWT (VERY IMPORTANT 🔥)
+  //  JWT 
   await fastify.register(jwt, {
     secret: process.env.SUPABASE_JWT_SECRET as string,
   });
 
-  // ✅ ROUTES
+  // ROUTES
   await fastify.register(contactRoutes, { prefix: '/api' });
   await fastify.register(leadsRoutes, { prefix: '/api' });
   await fastify.register(interactionsRoutes, { prefix: '/api' });
   await fastify.register(authRoutes, { prefix: '/api' });
 
-  // ✅ HEALTH CHECK
+  // HEALTH CHECK
   fastify.get('/health', async () => ({
     status: 'ok',
     timestamp: new Date().toISOString(),
