@@ -45,9 +45,25 @@ export default function AdminPage() {
     setLoading(true);
     try {
       const { data: { session } } = await supabase.auth.getSession();
+
+      // ✅ FORCE refresh if session exists
+      let token = session?.access_token;
+
+      if (!token) {
+        const { data } = await supabase.auth.refreshSession();
+        token = data.session?.access_token;
+      }
+
+      console.log("TOKEN:", token); // 🔥 debug
+
+      if (!token) {
+        console.error("No token found");
+        return;
+      }
+      
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
       const res = await fetch(`${apiUrl}/api/leads?limit=100`, {
-        headers: { Authorization: `Bearer ${session?.access_token}` },
+        headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
         const body = await res.json();
@@ -69,16 +85,29 @@ export default function AdminPage() {
 
   const handleStatusUpdate = async (id: string, status: string) => {
     const { data: { session } } = await supabase.auth.getSession();
+
+    let token = session?.access_token;
+
+    if (!token) {
+      const { data } = await supabase.auth.refreshSession();
+      token = data.session?.access_token;
+    }
+
+    if (!token) {
+      console.error("No token found");
+      return;
+    }
+
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
     await fetch(`${apiUrl}/api/leads/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${session?.access_token}`,
+        Authorization: `Bearer ${token}`, ✅
       },
       body: JSON.stringify({ status }),
     });
-    setLeads(prev => prev.map(l => l.id === id ? { ...l, status } : l));
   };
 
   const handleLogout = async () => {
