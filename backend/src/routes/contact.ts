@@ -23,8 +23,18 @@ export async function contactRoutes(fastify: FastifyInstance) {
       }]).select().single();
 
       if (error) {
-        fastify.log.error(error);
-        return reply.status(500).send({ error: 'Failed to submit contact form' });
+        fastify.log.error({
+          msg: 'Supabase insert error on leads table',
+          code: error.code,
+          details: error.details,
+          hint: error.hint,
+          message: error.message,
+        });
+        const isDev = process.env.NODE_ENV !== 'production';
+        return reply.status(500).send({
+          error: 'Failed to submit contact form',
+          ...(isDev && { details: error.message, code: error.code, hint: error.hint }),
+        });
       }
       return reply.status(201).send({ success: true, data });
     } catch (err) {

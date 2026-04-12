@@ -37,11 +37,13 @@ ALTER TABLE interactions ENABLE ROW LEVEL SECURITY;
 -- Allow service role full access
 CREATE POLICY "Service role can do everything on leads"
   ON leads FOR ALL
-  USING (auth.role() = 'service_role');
+  USING (auth.role() = 'service_role')
+  WITH CHECK (auth.role() = 'service_role');
 
 CREATE POLICY "Service role can do everything on interactions"
   ON interactions FOR ALL
-  USING (auth.role() = 'service_role');
+  USING (auth.role() = 'service_role')
+  WITH CHECK (auth.role() = 'service_role');
 
 -- Updated_at trigger
 CREATE OR REPLACE FUNCTION update_updated_at()
