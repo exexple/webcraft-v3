@@ -62,9 +62,11 @@ export default function AdminPage() {
       }
       
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      const res = await fetch(`${apiUrl}/api/leads?limit=100`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch('https://webcraft-v3.onrender.com/api/leads', {
+        headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       if (res.ok) {
         const body = await res.json();
         setLeads(body.data || []);
