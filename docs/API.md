@@ -1,6 +1,6 @@
 # Webcraft Studio API Documentation
 
-Base URL: `http://localhost:4000` (development) | `https://api.webcraftstudio.com` (production)
+Base URL: `https://your-backend.onrender.com` (development) | `https://api.webcraftstudio.com` (production)
 
 ## Authentication
 
