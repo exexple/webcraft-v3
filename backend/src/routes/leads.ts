@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { supabase } from '../services/supabase';
+import { verifyAuth } from '../middleware/auth';
 
 const updateLeadSchema = z.object({
   status: z.enum(['new', 'contacted', 'qualified', 'closed', 'converted']).optional(),
@@ -9,17 +10,8 @@ const updateLeadSchema = z.object({
 
 export async function leadsRoutes(fastify: FastifyInstance) {
 
-  //  AUTH HANDLER (reuse everywhere)
-  const verifyJWT = async (request: any, reply: any) => {
-    try {
-      await request.jwtVerify();
-    } catch (err) {
-      return reply.status(401).send({ error: 'Unauthorized' });
-    }
-  };
-
   //  GET ALL LEADS
-  fastify.get('/leads', { preHandler: verifyJWT }, async (request, reply) => {
+  fastify.get('/leads', { preHandler: verifyAuth }, async (request, reply) => {
     try {
       const query = request.query as {
         status?: string;
@@ -69,7 +61,7 @@ export async function leadsRoutes(fastify: FastifyInstance) {
   });
 
   //  GET SINGLE LEAD
-  fastify.get('/leads/:id', { preHandler: verifyJWT }, async (request, reply) => {
+  fastify.get('/leads/:id', { preHandler: verifyAuth }, async (request, reply) => {
     try {
       const { id } = request.params as { id: string };
 
@@ -77,7 +69,6 @@ export async function leadsRoutes(fastify: FastifyInstance) {
         .from('leads')
         .select('*')
         .eq('id', id)
-        .is('deleted_at', null)
         .single();
 
       if (leadError || !lead) {
@@ -104,7 +95,7 @@ export async function leadsRoutes(fastify: FastifyInstance) {
   });
 
   //  UPDATE LEAD
-  fastify.patch('/leads/:id', { preHandler: verifyJWT }, async (request, reply) => {
+  fastify.patch('/leads/:id', { preHandler: verifyAuth }, async (request, reply) => {
     try {
       const { id } = request.params as { id: string };
       const body = updateLeadSchema.parse(request.body);
@@ -135,14 +126,14 @@ export async function leadsRoutes(fastify: FastifyInstance) {
     }
   });
 
-  //  DELETE (SOFT DELETE)
-  fastify.delete('/leads/:id', { preHandler: verifyJWT }, async (request, reply) => {
+  //  DELETE LEAD
+  fastify.delete('/leads/:id', { preHandler: verifyAuth }, async (request, reply) => {
     try {
       const { id } = request.params as { id: string };
 
       const { error } = await supabase
         .from('leads')
-        .update({ deleted_at: new Date().toISOString() })
+        .delete()
         .eq('id', id);
 
       if (error) {
@@ -156,4 +147,5 @@ export async function leadsRoutes(fastify: FastifyInstance) {
       return reply.status(500).send({ error: 'Internal server error' });
     }
   });
-        }
+
+}
