@@ -58,7 +58,9 @@ async function start() {
 
   try {
     await fastify.listen({ port, host });
+    if (process.env.NODE_ENV !== 'production') {
     console.log(`🚀 Server running on http://${host}:${port}`);
+  }
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);
