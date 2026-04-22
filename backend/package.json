@@ -14,7 +14,7 @@
   "type": "commonjs",
   "dependencies": {
     "fastify": "^4.26.2",
-    "@fastify/jwt": "^8.0.0",
+    "@fastify/jwt": "^9.0.0",
     "@fastify/cors": "^11.2.0",
     "@fastify/rate-limit": "^10.3.0",
     "@supabase/supabase-js": "^2.103.0",
