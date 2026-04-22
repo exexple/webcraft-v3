@@ -9,7 +9,7 @@ const updateLeadSchema = z.object({
 
 export async function leadsRoutes(fastify: FastifyInstance) {
 
-  // 🔐 AUTH HANDLER (reuse everywhere)
+  //  AUTH HANDLER (reuse everywhere)
   const verifyJWT = async (request: any, reply: any) => {
     try {
       await request.jwtVerify();
@@ -18,7 +18,7 @@ export async function leadsRoutes(fastify: FastifyInstance) {
     }
   };
 
-  // ✅ GET ALL LEADS
+  //  GET ALL LEADS
   fastify.get('/leads', { preHandler: verifyJWT }, async (request, reply) => {
     try {
       const query = request.query as {
@@ -31,7 +31,6 @@ export async function leadsRoutes(fastify: FastifyInstance) {
       let dbQuery = supabase
         .from('leads')
         .select('*', { count: 'exact' })
-        .is('deleted_at', null)
         .order('created_at', { ascending: false });
 
       if (query.status) {
@@ -69,7 +68,7 @@ export async function leadsRoutes(fastify: FastifyInstance) {
     }
   });
 
-  // ✅ GET SINGLE LEAD
+  //  GET SINGLE LEAD
   fastify.get('/leads/:id', { preHandler: verifyJWT }, async (request, reply) => {
     try {
       const { id } = request.params as { id: string };
@@ -104,7 +103,7 @@ export async function leadsRoutes(fastify: FastifyInstance) {
     }
   });
 
-  // ✅ UPDATE LEAD
+  //  UPDATE LEAD
   fastify.patch('/leads/:id', { preHandler: verifyJWT }, async (request, reply) => {
     try {
       const { id } = request.params as { id: string };
@@ -136,7 +135,7 @@ export async function leadsRoutes(fastify: FastifyInstance) {
     }
   });
 
-  // ✅ DELETE (SOFT DELETE)
+  //  DELETE (SOFT DELETE)
   fastify.delete('/leads/:id', { preHandler: verifyJWT }, async (request, reply) => {
     try {
       const { id } = request.params as { id: string };
