@@ -46,7 +46,7 @@ export default function AdminPage() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
 
-      // ✅ FORCE refresh if session exists
+      //  FORCE refresh if session exists
       let token = session?.access_token;
 
       if (!token) {
@@ -54,12 +54,18 @@ export default function AdminPage() {
         token = data.session?.access_token;
       }
 
-      console.log("TOKEN:", token); // 🔥 debug
+      if (process.env.NODE_ENV !== 'production') {
+      console.log("TOKEN:", token);
+    }
 
-      if (!token) {
+    if (!token) {
+      if (process.env.NODE_ENV !== 'production') {
         console.error("No token found");
-        return;
       }
+
+  // 👉 handle properly instead of just returning
+      return;
+  }
       
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
       const res = await fetch('https://webcraft-v3.onrender.com/api/leads', {
