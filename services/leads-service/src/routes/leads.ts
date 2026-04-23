@@ -6,7 +6,7 @@ import type { FastifyInstance } from 'fastify';
 import { eq, desc } from 'drizzle-orm';
 import { db } from '../db/client.js';
 import { leads } from '../db/schema.js';
-import type { CreateLeadDto, UpdateLeadDto } from '../../../../shared/types/index.js';
+import type { CreateLeadDto, UpdateLeadDto } from '@webcraft/shared/types';
 
 export async function leadRoutes(server: FastifyInstance) {
   // ── POST /leads — Create a lead ───────────────────────────
