@@ -16,7 +16,7 @@ import type {
   SiteMetric,
   LoginDto,
   AuthResponse
-} from '@webcraft/shared';
+} from '@webcraft/shared/types';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_GATEWAY_URL || 'http://localhost:4000/api';
 

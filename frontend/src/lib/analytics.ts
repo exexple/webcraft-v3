@@ -1,5 +1,5 @@
 import { analyticsApi } from './api';
-import type { AnalyticsEventPayload } from '@webcraft/shared';
+import type { AnalyticsEventPayload } from '@webcraft/shared/types';
 
 /**
  * Fires an analytics event to the Analytics microservice.
