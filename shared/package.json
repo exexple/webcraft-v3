@@ -7,15 +7,18 @@
   "types": "./dist/index.d.ts",
   "exports": {
     "./types": {
-      "import": "./types/index.ts",
-      "require": "./types/index.ts"
+      "types": "./types/index.ts",
+      "import": "./dist/types/index.js",
+      "require": "./dist/types/index.js"
     },
     "./utils": {
-      "import": "./utils/index.ts",
-      "require": "./utils/index.ts"
+      "types": "./utils/index.ts",
+      "import": "./dist/utils/index.js",
+      "require": "./dist/utils/index.js"
     }
   },
   "scripts": {
+    "build": "tsc",
     "type-check": "tsc --noEmit"
   }
 }
