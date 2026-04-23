@@ -24,16 +24,18 @@ const API_BASE = process.env.NEXT_PUBLIC_API_GATEWAY_URL || 'http://localhost:40
  * Base API fetcher with auth handling
  */
 async function fetcher<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-    ...(options.headers || {}),
-  };
+  const headers = new Headers(options.headers);
+
+  // Only set JSON content type if it's not a FormData payload
+  if (!(options.body instanceof FormData) && !headers.has('Content-Type')) {
+    headers.set('Content-Type', 'application/json');
+  }
 
   // Add auth token if available (client-side only)
   if (typeof window !== 'undefined') {
     const token = localStorage.getItem('wc_admin_token');
     if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+      headers.set('Authorization', `Bearer ${token}`);
     }
   }
 
