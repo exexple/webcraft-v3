@@ -1,0 +1,21 @@
+{
+  "name": "@webcraft/shared",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./types": {
+      "import": "./types/index.ts",
+      "require": "./types/index.ts"
+    },
+    "./utils": {
+      "import": "./utils/index.ts",
+      "require": "./utils/index.ts"
+    }
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  }
+}

@@ -1,0 +1,90 @@
+services:
+  # ─────────────────────────────────────────────────────────
+  # API GATEWAY
+  # ─────────────────────────────────────────────────────────
+  - type: web
+    name: wc-gateway
+    env: node
+    region: ohio
+    plan: starter
+    buildCommand: npm install && npm run build --filter=gateway
+    startCommand: npm run start --filter=gateway
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: GATEWAY_PORT
+        value: 4000
+      - key: GATEWAY_HOST
+        value: 0.0.0.0
+      - key: JWT_SECRET
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD_HASH
+        sync: false
+      - key: LEADS_SERVICE_URL
+        value: http://wc-leads-service:4001
+      - key: ANALYTICS_SERVICE_URL
+        value: http://wc-analytics-service:4002
+      - key: CMS_SERVICE_URL
+        value: http://wc-cms-service:4003
+
+  # ─────────────────────────────────────────────────────────
+  # LEADS SERVICE
+  # ─────────────────────────────────────────────────────────
+  - type: pserv
+    name: wc-leads-service
+    env: node
+    region: ohio
+    plan: starter
+    buildCommand: npm install && npm run build --filter=@webcraft/leads-service
+    startCommand: npm run start --filter=@webcraft/leads-service
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: LEADS_SERVICE_PORT
+        value: 4001
+      - key: DATABASE_URL
+        sync: false
+
+  # ─────────────────────────────────────────────────────────
+  # ANALYTICS SERVICE
+  # ─────────────────────────────────────────────────────────
+  - type: pserv
+    name: wc-analytics-service
+    env: node
+    region: ohio
+    plan: starter
+    buildCommand: npm install && npm run build --filter=@webcraft/analytics-service
+    startCommand: npm run start --filter=@webcraft/analytics-service
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ANALYTICS_SERVICE_PORT
+        value: 4002
+      - key: DATABASE_URL
+        sync: false
+      - key: IP_HASH_SALT
+        sync: false
+
+  # ─────────────────────────────────────────────────────────
+  # CMS SERVICE
+  # ─────────────────────────────────────────────────────────
+  - type: pserv
+    name: wc-cms-service
+    env: node
+    region: ohio
+    plan: starter
+    buildCommand: npm install && npm run build --filter=@webcraft/cms-service
+    startCommand: npm run start --filter=@webcraft/cms-service
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CMS_SERVICE_PORT
+        value: 4003
+      - key: DATABASE_URL
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
