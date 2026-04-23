@@ -7,8 +7,8 @@ services:
     env: node
     region: ohio
     plan: free
-    buildCommand: npm install && npm run build --filter=gateway
-    startCommand: npm run start --filter=gateway
+    buildCommand: npm install --include=dev && npx turbo run build --filter=gateway
+    startCommand: npm run start --workspace=gateway
     envVars:
       - key: NODE_ENV
         value: production
@@ -37,8 +37,8 @@ services:
     env: node
     region: ohio
     plan: free
-    buildCommand: npm install && npm run build --filter=@webcraft/leads-service
-    startCommand: npm run start --filter=@webcraft/leads-service
+    buildCommand: npm install --include=dev && npx turbo run build --filter=@webcraft/leads-service
+    startCommand: npm run start --workspace=@webcraft/leads-service
     envVars:
       - key: NODE_ENV
         value: production
@@ -55,8 +55,8 @@ services:
     env: node
     region: ohio
     plan: free
-    buildCommand: npm install && npm run build --filter=@webcraft/analytics-service
-    startCommand: npm run start --filter=@webcraft/analytics-service
+    buildCommand: npm install --include=dev && npx turbo run build --filter=@webcraft/analytics-service
+    startCommand: npm run start --workspace=@webcraft/analytics-service
     envVars:
       - key: NODE_ENV
         value: production
@@ -75,8 +75,8 @@ services:
     env: node
     region: ohio
     plan: free
-    buildCommand: npm install && npm run build --filter=@webcraft/cms-service
-    startCommand: npm run start --filter=@webcraft/cms-service
+    buildCommand: npm install --include=dev && npx turbo run build --filter=@webcraft/cms-service
+    startCommand: npm run start --workspace=@webcraft/cms-service
     envVars:
       - key: NODE_ENV
         value: production
