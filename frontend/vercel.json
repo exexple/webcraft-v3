@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd ../ && npm run build --filter=frontend",
+  "buildCommand": "cd ../ && npx turbo run build --filter=frontend",
   "outputDirectory": "../frontend/.next",
   "framework": "nextjs",
   "installCommand": "cd ../ && npm install"
