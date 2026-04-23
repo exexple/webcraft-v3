@@ -6,7 +6,7 @@ services:
     name: wc-gateway
     env: node
     region: ohio
-    plan: starter
+    plan: free
     buildCommand: npm install && npm run build --filter=gateway
     startCommand: npm run start --filter=gateway
     envVars:
@@ -32,11 +32,11 @@ services:
   # ─────────────────────────────────────────────────────────
   # LEADS SERVICE
   # ─────────────────────────────────────────────────────────
-  - type: pserv
+  - type: web
     name: wc-leads-service
     env: node
     region: ohio
-    plan: starter
+    plan: free
     buildCommand: npm install && npm run build --filter=@webcraft/leads-service
     startCommand: npm run start --filter=@webcraft/leads-service
     envVars:
@@ -50,11 +50,11 @@ services:
   # ─────────────────────────────────────────────────────────
   # ANALYTICS SERVICE
   # ─────────────────────────────────────────────────────────
-  - type: pserv
+  - type: web
     name: wc-analytics-service
     env: node
     region: ohio
-    plan: starter
+    plan: free
     buildCommand: npm install && npm run build --filter=@webcraft/analytics-service
     startCommand: npm run start --filter=@webcraft/analytics-service
     envVars:
@@ -70,11 +70,11 @@ services:
   # ─────────────────────────────────────────────────────────
   # CMS SERVICE
   # ─────────────────────────────────────────────────────────
-  - type: pserv
+  - type: web
     name: wc-cms-service
     env: node
     region: ohio
-    plan: starter
+    plan: free
     buildCommand: npm install && npm run build --filter=@webcraft/cms-service
     startCommand: npm run start --filter=@webcraft/cms-service
     envVars:
