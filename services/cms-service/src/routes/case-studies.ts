@@ -131,14 +131,18 @@ export async function caseStudyRoutes(server: FastifyInstance) {
         const { id } = request.params;
         const updates = request.body;
 
+        const payload: Record<string, any> = { ...updates, updated_at: new Date() };
+
         // Auto-set published_at when publishing
         if (updates.status === 'published') {
-          (updates as Record<string, unknown>).published_at = new Date().toISOString();
+          payload.published_at = new Date();
+        } else if (updates.published_at) {
+          payload.published_at = new Date(updates.published_at);
         }
 
         const [updated] = await db
           .update(caseStudies)
-          .set({ ...updates, updated_at: new Date() })
+          .set(payload)
           .where(eq(caseStudies.id, id))
           .returning();
 

@@ -7,12 +7,12 @@
   "types": "./dist/index.d.ts",
   "exports": {
     "./types": {
-      "types": "./types/index.ts",
+      "types": "./dist/types/index.d.ts",
       "import": "./dist/types/index.js",
       "require": "./dist/types/index.js"
     },
     "./utils": {
-      "types": "./utils/index.ts",
+      "types": "./dist/utils/index.d.ts",
       "import": "./dist/utils/index.js",
       "require": "./dist/utils/index.js"
     }

@@ -10,7 +10,7 @@ import type {
   CreateContentBlockDto,
   UpdateContentBlockDto,
   CreateTestimonialDto,
-} from '../../../../shared/types/index.js';
+} from '@webcraft/shared/types';
 
 export async function contentRoutes(server: FastifyInstance) {
   // ── GET /content/:page — All blocks for a page ────────────
