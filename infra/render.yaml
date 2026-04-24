@@ -27,11 +27,11 @@ services:
       - key: CORS_ORIGIN
         value: https://webcraft-v3-frontend.vercel.app,https://*.vercel.app
       - key: LEADS_SERVICE_URL
-        value: http://wc-leads-service:4001
+        value: https://wc-leads-service.onrender.com
       - key: ANALYTICS_SERVICE_URL
-        value: http://wc-analytics-service:4002
+        value: https://wc-analytics-service.onrender.com
       - key: CMS_SERVICE_URL
-        value: http://wc-cms-service:4003
+        value: https://wc-cms-service.onrender.com
 
   # ─────────────────────────────────────────────────────────
   # LEADS SERVICE
