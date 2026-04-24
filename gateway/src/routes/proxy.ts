@@ -31,18 +31,33 @@ const SERVICE_MAP: Record<string, string> = {
   cms: process.env.CMS_SERVICE_URL ?? 'http://localhost:4003',
 };
 
-function resolveService(path: string): { serviceUrl: string; servicePath: string } | null {
-  // path = '/leads/...' or '/analytics/...' or '/cms/...'
-  const [, service, ...rest] = path.split('/');
+// ── Route resolver ──────────────────────────────────────────────
+// CRITICAL: We must strip the query string BEFORE splitting the path
+// to extract the service name. Otherwise /leads?page=1 is treated
+// as a service key "leads?page=1" which doesn't exist in SERVICE_MAP.
+// We then re-attach the query string to the service path so pagination
+// and filtering are preserved end-to-end.
+function resolveService(fullPath: string): { serviceUrl: string; servicePath: string } | null {
+  // Separate path and query string
+  const qIdx = fullPath.indexOf('?');
+  const pathOnly = qIdx !== -1 ? fullPath.slice(0, qIdx) : fullPath;
+  const queryString = qIdx !== -1 ? fullPath.slice(qIdx) : ''; // includes the leading '?'
+
+  // pathOnly = '/leads' or '/leads/abc-123' or '/cms/case-studies'
+  const [, service, ...rest] = pathOnly.split('/');
   const serviceUrl = SERVICE_MAP[service];
   if (!serviceUrl) return null;
-  const servicePath = '/' + rest.join('/');
+
+  // Reconstruct the downstream path and re-attach query string
+  const downstreamPath = '/' + rest.join('/');
+  const servicePath = downstreamPath + queryString;
+
   return { serviceUrl, servicePath };
 }
 
-function isProtectedRoute(method: string, path: string): boolean {
+function isProtectedRoute(method: string, pathOnly: string): boolean {
   return PROTECTED_PATTERNS.some(
-    (p) => p.method === method && p.pattern.test(path)
+    (p) => p.method === method && p.pattern.test(pathOnly)
   );
 }
 
@@ -82,16 +97,42 @@ async function proxyRequest(
   }
 }
 
+// ── Keep-alive pinger ───────────────────────────────────────────
+// Render free-tier services spin down after ~15 min of inactivity.
+// This pings every service's /health endpoint every 14 minutes to
+// prevent cold starts from affecting real user traffic.
+export function startKeepAlivePings() {
+  if (process.env.NODE_ENV !== 'production') return;
+
+  const targets = Object.values(SERVICE_MAP).map((url) => `${url}/health`);
+  const INTERVAL_MS = 14 * 60 * 1000; // 14 minutes
+
+  const ping = async () => {
+    for (const url of targets) {
+      try {
+        await fetch(url, { method: 'GET' });
+      } catch {
+        // Silently ignore — service may be starting up
+      }
+    }
+  };
+
+  setInterval(ping, INTERVAL_MS);
+}
+
 export async function proxyRoutes(server: FastifyInstance) {
   // Catch-all proxy handler for /api/leads/*, /api/analytics/*, /api/cms/*
   server.all<{ Params: { '*': string } }>(
     '/*',
     {
       preHandler: async (request, reply) => {
-        const path = request.url.replace('/api', '');
+        // Strip query string before checking protection rules
+        const fullPath = request.url.replace('/api', '');
+        const qIdx = fullPath.indexOf('?');
+        const pathOnly = qIdx !== -1 ? fullPath.slice(0, qIdx) : fullPath;
         const method = request.method.toUpperCase();
 
-        if (isProtectedRoute(method, path)) {
+        if (isProtectedRoute(method, pathOnly)) {
           try {
             await request.jwtVerify();
           } catch {
@@ -104,14 +145,14 @@ export async function proxyRoutes(server: FastifyInstance) {
       },
     },
     async (request, reply) => {
-      // Strip the /api prefix
-      const path = request.url.replace(/^\/api/, '');
-      const resolved = resolveService(path);
+      // Strip the /api prefix, pass the full path including query string
+      const fullPath = request.url.replace(/^\/api/, '');
+      const resolved = resolveService(fullPath);
 
       if (!resolved) {
         return reply.status(404).send({
           success: false,
-          error: `No service mapped for route: ${path}`,
+          error: `No service mapped for route: ${fullPath}`,
         });
       }
 

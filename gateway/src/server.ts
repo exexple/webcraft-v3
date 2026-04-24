@@ -9,7 +9,7 @@ import helmet from '@fastify/helmet';
 import rateLimit from '@fastify/rate-limit';
 import jwt from '@fastify/jwt';
 import { authRoutes } from './routes/auth.js';
-import { proxyRoutes } from './routes/proxy.js';
+import { proxyRoutes, startKeepAlivePings } from './routes/proxy.js';
 
 const server = Fastify({
   logger: {
@@ -107,6 +107,8 @@ const HOST = process.env.GATEWAY_HOST ?? '0.0.0.0';
 try {
   await server.listen({ port: PORT, host: HOST });
   console.log(`\n🚀 API Gateway running at http://localhost:${PORT}`);
+  // Keep Render free-tier microservices warm to prevent cold-start 503s
+  startKeepAlivePings();
 } catch (err) {
   server.log.error(err);
   process.exit(1);
