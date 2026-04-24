@@ -7,6 +7,11 @@ import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { fetch } from 'undici';
 
 // Protected routes requiring JWT auth at gateway level
+// ========================================================================
+// CRITICAL: This list MUST be manually kept in sync with microservice
+// endpoints that require authentication. Any authenticated endpoint NOT
+// listed here will be publicly exposed.
+// ========================================================================
 const PROTECTED_PATTERNS = [
   { method: 'GET', pattern: /^\/leads/ },
   { method: 'PATCH', pattern: /^\/leads\// },
@@ -68,20 +73,20 @@ async function proxyRequest(
 ) {
   try {
     const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
       'X-Forwarded-For': request.ip,
       'X-Request-Id': String(request.id),
     };
 
+    if (request.headers['content-type']) {
+      headers['Content-Type'] = request.headers['content-type'];
+    }
     // Forward auth header if present
     if (request.headers.authorization) {
       headers['Authorization'] = request.headers.authorization;
     }
 
     const body =
-      request.method !== 'GET' && request.method !== 'DELETE'
-        ? JSON.stringify(request.body)
-        : undefined;
+      request.body ? JSON.stringify(request.body) : undefined;
 
     const response = await fetch(targetUrl, {
       method: request.method,
@@ -89,8 +94,15 @@ async function proxyRequest(
       body,
     });
 
-    const data = await response.json();
-    return reply.status(response.status).send(data);
+    // Forward headers from service response
+    response.headers.forEach((value, key) => {
+      // Avoid setting headers that are controlled by Fastify
+      if (key.toLowerCase() !== 'transfer-encoding' && key.toLowerCase() !== 'connection') {
+        reply.header(key, value);
+      }
+    });
+
+    return reply.status(response.status).send(response.body);
   } catch (err) {
     const error = err instanceof Error ? err.message : 'Service unavailable';
     return reply.status(503).send({ success: false, error });
@@ -102,12 +114,15 @@ async function proxyRequest(
 // This pings every service's /health endpoint every 14 minutes to
 // prevent cold starts from affecting real user traffic.
 export function startKeepAlivePings() {
-  if (process.env.NODE_ENV !== 'production') return;
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('Skipping keep-alive pings in development mode.');
+    return;
+  }
 
   const targets = Object.values(SERVICE_MAP).map((url) => `${url}/health`);
   const INTERVAL_MS = 14 * 60 * 1000; // 14 minutes
 
-  const ping = async () => {
+  const pingServices = async () => {
     for (const url of targets) {
       try {
         await fetch(url, { method: 'GET' });
@@ -115,9 +130,10 @@ export function startKeepAlivePings() {
         // Silently ignore — service may be starting up
       }
     }
+    setTimeout(pingServices, INTERVAL_MS); // Schedule next ping
   };
 
-  setInterval(ping, INTERVAL_MS);
+  pingServices(); // Start the first ping
 }
 
 export async function proxyRoutes(server: FastifyInstance) {
@@ -182,9 +198,9 @@ export async function debugRoutes(server: FastifyInstance) {
     },
     async (_request, reply) => {
       const services = [
-        { name: 'leads',     url: SERVICE_MAP.leads },
+        { name: 'leads', url: SERVICE_MAP.leads },
         { name: 'analytics', url: SERVICE_MAP.analytics },
-        { name: 'cms',       url: SERVICE_MAP.cms },
+        { name: 'cms', url: SERVICE_MAP.cms },
       ];
 
       const results = await Promise.allSettled(
@@ -196,31 +212,33 @@ export async function debugRoutes(server: FastifyInstance) {
               signal: AbortSignal.timeout(8000),
             });
             const data = await res.json();
-            return { name, url, status: res.status, latencyMs: Date.now() - start, data };
+            return { name, status: 'ok', latencyMs: Date.now() - start, details: data };
           } catch (err) {
+            const isTimeout = err instanceof Error && (err.name === 'TimeoutError' || err.name === 'AbortError');
             return {
               name,
-              url,
-              status: 0,
+              status: isTimeout ? 'timeout' : 'error',
               latencyMs: Date.now() - start,
-              error: err instanceof Error ? err.message : String(err),
+              error: isTimeout ? 'Request timed out after 8s' : 'Service unreachable or returned non-JSON response.',
             };
           }
         })
       );
 
-      const report = results.map((r) =>
-        r.status === 'fulfilled' ? r.value : { name: 'unknown', error: r.reason }
-      );
+      const report = results.map((r) => {
+        if (r.status === 'fulfilled') {
+          return r.value;
+        }
+        // This case should ideally not be hit due to the try/catch inside the map
+        return {
+          name: 'unknown',
+          status: 'error',
+          error: 'An unexpected error occurred during health check.',
+        };
+      });
 
       return reply.send({
         success: true,
-        gateway: {
-          corsOrigin: process.env.CORS_ORIGIN ?? 'not set',
-          leadsUrl: SERVICE_MAP.leads,
-          analyticsUrl: SERVICE_MAP.analytics,
-          cmsUrl: SERVICE_MAP.cms,
-        },
         services: report,
         timestamp: new Date().toISOString(),
       });
