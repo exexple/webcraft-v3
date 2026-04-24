@@ -18,7 +18,7 @@ export default function AdminLeadsPage() {
   async function loadLeads() {
     try {
       const res = await leadsApi.getAll();
-      setLeads(res.items || []);
+      setLeads(res.data || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load leads');
     } finally {
@@ -60,8 +60,7 @@ export default function AdminLeadsPage() {
                   <tr style={{ borderBottom: '1px solid var(--color-border)', color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>
                     <th style={{ padding: '1rem' }}>Name</th>
                     <th style={{ padding: '1rem' }}>Email</th>
-                    <th style={{ padding: '1rem' }}>Company</th>
-                    <th style={{ padding: '1rem' }}>Budget</th>
+                    <th style={{ padding: '1rem' }}>Phone</th>
                     <th style={{ padding: '1rem' }}>Status</th>
                     <th style={{ padding: '1rem' }}>Actions</th>
                   </tr>
@@ -71,8 +70,7 @@ export default function AdminLeadsPage() {
                     <tr key={lead.id} style={{ borderBottom: '1px solid var(--color-border)', fontSize: '0.9rem' }}>
                       <td style={{ padding: '1rem' }}>{lead.name}</td>
                       <td style={{ padding: '1rem' }}>{lead.email}</td>
-                      <td style={{ padding: '1rem' }}>{lead.company || '-'}</td>
-                      <td style={{ padding: '1rem' }}>{lead.budget || '-'}</td>
+                      <td style={{ padding: '1rem' }}>{lead.phone || '-'}</td>
                       <td style={{ padding: '1rem' }}>
                         <span style={{ 
                           padding: '0.25rem 0.5rem', 

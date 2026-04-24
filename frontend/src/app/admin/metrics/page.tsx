@@ -64,7 +64,7 @@ export default function AdminMetricsPage() {
                 <div key={metric.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', border: '1px solid var(--color-border)', borderRadius: '0.5rem' }}>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.1rem', marginBottom: '0.25rem' }}>{metric.label}</div>
-                    <div style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>ID: {metric.key}</div>
+                    <div style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>ID: {metric.id}</div>
                   </div>
                   <div style={{ flex: 1, display: 'flex', gap: '1rem', alignItems: 'center' }}>
                     <input 

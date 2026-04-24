@@ -29,11 +29,11 @@ export default function AdminContentPage() {
     }
   }
 
-  async function handleUpdate(id: string, newContent: string) {
+  async function handleUpdate(id: string, newValue: string) {
     setUpdating(id);
     try {
-      await contentBlocksApi.update(id, { content: newContent });
-      setBlocks((prev) => prev.map((b) => (b.id === id ? { ...b, content: newContent } : b)));
+      await contentBlocksApi.update(id, { value: newValue });
+      setBlocks((prev) => prev.map((b) => (b.id === id ? { ...b, value: newValue } : b)));
     } catch (err) {
       alert('Failed to update content block');
     } finally {
@@ -79,20 +79,20 @@ export default function AdminContentPage() {
               {blocks.map((block) => (
                 <div key={block.id} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <label className="label" style={{ fontWeight: 600 }}>{block.section_name}</label>
+                    <label className="label" style={{ fontWeight: 600 }}>{block.key}</label>
                     {updating === block.id && <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Saving...</span>}
                   </div>
                   <textarea 
                     className="input" 
-                    defaultValue={block.content}
+                    defaultValue={block.value}
                     onBlur={(e) => {
-                      if (e.target.value !== block.content) {
+                      if (e.target.value !== block.value) {
                         handleUpdate(block.id, e.target.value);
                       }
                     }}
                     style={{ minHeight: '100px', fontFamily: 'inherit' }}
                   />
-                  <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Block ID: {block.block_key}</p>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Type: {block.type}</p>
                 </div>
               ))}
             </div>

@@ -9,7 +9,7 @@ export default function AdminTestimonialsPage() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [form, setForm] = useState({ client_name: '', company: '', quote: '', rating: '5' });
+  const [form, setForm] = useState({ client_name: '', client_company: '', client_title: '', quote: '', rating: '5' });
   const [submitting, setSubmitting] = useState(false);
   const [msg, setMsg] = useState('');
   const router = useRouter();
@@ -40,13 +40,14 @@ export default function AdminTestimonialsPage() {
     try {
       await testimonialsApi.create({
         client_name: form.client_name,
-        company: form.company,
+        client_company: form.client_company,
+        client_title: form.client_title || 'Client',
         quote: form.quote,
         rating: parseInt(form.rating, 10),
       });
 
       setMsg('✅ Testimonial created successfully!');
-      setForm({ client_name: '', company: '', quote: '', rating: '5' });
+      setForm({ client_name: '', client_company: '', client_title: '', quote: '', rating: '5' });
       await loadTestimonials();
     } catch (err) {
       setMsg(`❌ Error: ${err instanceof Error ? err.message : 'Unknown error'}`);
@@ -76,7 +77,11 @@ export default function AdminTestimonialsPage() {
               </div>
               <div>
                 <label className="label" style={{ display: 'block', marginBottom: '0.5rem' }}>Company</label>
-                <input className="input" value={form.company} onChange={update('company')} placeholder="Acme Corp" />
+                <input className="input" value={form.client_company} onChange={update('client_company')} placeholder="Acme Corp" />
+              </div>
+              <div>
+                <label className="label" style={{ display: 'block', marginBottom: '0.5rem' }}>Title</label>
+                <input className="input" value={form.client_title} onChange={update('client_title')} placeholder="CEO" />
               </div>
               <div>
                 <label className="label" style={{ display: 'block', marginBottom: '0.5rem' }}>Rating *</label>
@@ -118,8 +123,8 @@ export default function AdminTestimonialsPage() {
                 {testimonials.map((t) => (
                   <div key={t.id} style={{ padding: '1rem', border: '1px solid var(--color-border)', borderRadius: '0.5rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                      <strong style={{ fontSize: '0.95rem' }}>{t.client_name} <span style={{ color: 'var(--color-text-muted)', fontWeight: 'normal', fontSize: '0.85rem' }}>{t.company && `— ${t.company}`}</span></strong>
-                      <span style={{ color: '#f59e0b', fontSize: '0.875rem' }}>{'★'.repeat(t.rating)}{'☆'.repeat(5 - t.rating)}</span>
+                      <strong style={{ fontSize: '0.95rem' }}>{t.client_name} <span style={{ color: 'var(--color-text-muted)', fontWeight: 'normal', fontSize: '0.85rem' }}>{t.client_company && `— ${t.client_title ? `${t.client_title}, ` : ''}${t.client_company}`}</span></strong>
+                      <span style={{ color: '#f59e0b', fontSize: '0.875rem' }}>{'★'.repeat(t.rating || 5)}{'☆'.repeat(5 - (t.rating || 5))}</span>
                     </div>
                     <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', lineHeight: 1.5 }}>"{t.quote}"</p>
                   </div>
