@@ -7,8 +7,6 @@ export default function AdminDashboardPage() {
   const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
-    // Instead of localStorage, we try to fetch profile/verify
-    // If it fails (401), fetcher will throw and we can redirect
     import('@/lib/api').then(({ authApi }) => {
       // Just a dummy call to verify session
       fetch(`${process.env.NEXT_PUBLIC_API_GATEWAY_URL}/auth/verify`, { credentials: 'include' })
