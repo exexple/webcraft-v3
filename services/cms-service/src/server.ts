@@ -37,7 +37,7 @@ await server.register(contentRoutes);
 await server.register(testimonialRoutes);
 await server.register(metricsRoutes);
 
-const PORT = Number(process.env.CMS_SERVICE_PORT ?? 4003);
+const PORT = Number(process.env.PORT ?? process.env.CMS_SERVICE_PORT ?? 4003);
 
 try {
   await server.listen({ port: PORT, host: '0.0.0.0' });

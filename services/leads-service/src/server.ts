@@ -28,7 +28,7 @@ server.get('/health', async () => ({
 
 await server.register(leadRoutes);
 
-const PORT = Number(process.env.LEADS_SERVICE_PORT ?? 4001);
+const PORT = Number(process.env.PORT ?? process.env.LEADS_SERVICE_PORT ?? 4001);
 
 try {
   await server.listen({ port: PORT, host: '0.0.0.0' });
