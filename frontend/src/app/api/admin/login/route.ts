@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
   const body = await request.json();
 
-  const gatewayUrl = process.env.GATEWAY_URL || 'http://localhost:4000/api';
+  const gatewayUrl = process.env.GATEWAY_URL!;
 
   let gwRes: Response;
   try {
