@@ -27,8 +27,7 @@ export default function AdminLoginPage() {
         return;
       }
 
-      // Store token and redirect
-      localStorage.setItem('wc_admin_token', data.data.access_token);
+      // Redirect - cookie is set by server with HttpOnly
       window.location.href = '/admin/dashboard';
     } catch {
       setError('Failed to connect to server. Is the gateway running?');

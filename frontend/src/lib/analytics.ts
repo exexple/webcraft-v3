@@ -11,7 +11,7 @@ export function trackEvent(payload: AnalyticsEventPayload) {
   if (typeof window !== 'undefined') {
     let sessionId = sessionStorage.getItem('wc_session_id');
     if (!sessionId) {
-      sessionId = Math.random().toString(36).substring(2, 15);
+      sessionId = self.crypto.randomUUID();
       sessionStorage.setItem('wc_session_id', sessionId);
     }
     payload.session_id = sessionId;

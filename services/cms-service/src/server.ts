@@ -74,19 +74,16 @@ await server.register(metricsRoutes);
 
 const PORT = Number(process.env.PORT ?? process.env.CMS_SERVICE_PORT ?? 4003);
 
-// ── Startup DB verification ───────────────────────────────────
-// Test DB connection at startup so any misconfiguration is immediately
-// visible in Render logs instead of surfacing as a mystery 500.
-try {
-  await db.execute(sql`SELECT 1`);
-  console.log('✅ Database connection verified');
-} catch (err) {
-  const msg = err instanceof Error ? err.message : String(err);
-  const url = process.env.DATABASE_URL ?? 'NOT SET';
-  console.error('❌ DATABASE CONNECTION FAILED:', msg);
-  console.error('   DATABASE_URL:', url.replace(/:([^@:]+)@/, ':***@'));
-  // Don't exit — let the service start so /health can be inspected
-}
+// ── Startup DB verification (Non-blocking) ────────────────────
+// Test DB connection in the background so it doesn't block startup
+db.execute(sql`SELECT 1`)
+  .then(() => console.log('✅ Database connection verified'))
+  .catch((err) => {
+    const msg = err instanceof Error ? err.message : String(err);
+    const url = process.env.DATABASE_URL ?? 'NOT SET';
+    console.error('❌ DATABASE CONNECTION FAILED:', msg);
+    console.error('   DATABASE_URL:', url.replace(/:([^@:]+)@/, ':***@'));
+  });
 
 try {
   await server.listen({ port: PORT, host: '0.0.0.0' });

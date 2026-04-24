@@ -7,14 +7,26 @@ export default function AdminDashboardPage() {
   const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
-    const t = localStorage.getItem('wc_admin_token');
-    if (!t) { window.location.href = '/admin'; return; }
-    setToken(t);
+    // Instead of localStorage, we try to fetch profile/verify
+    // If it fails (401), fetcher will throw and we can redirect
+    import('@/lib/api').then(({ authApi }) => {
+      // Just a dummy call to verify session
+      fetch(`${process.env.NEXT_PUBLIC_API_GATEWAY_URL}/auth/verify`, { credentials: 'include' })
+        .then(res => {
+          if (!res.ok) window.location.href = '/admin';
+          else setToken('valid');
+        })
+        .catch(() => window.location.href = '/admin');
+    });
   }, []);
 
-  function logout() {
-    localStorage.removeItem('wc_admin_token');
-    window.location.href = '/admin';
+  async function logout() {
+    try {
+      const { authApi } = await import('@/lib/api');
+      await authApi.logout();
+    } finally {
+      window.location.href = '/admin';
+    }
   }
 
   if (!token) return null;

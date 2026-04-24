@@ -8,6 +8,7 @@ import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import rateLimit from '@fastify/rate-limit';
 import jwt from '@fastify/jwt';
+import cookie from '@fastify/cookie';
 import { authRoutes } from './routes/auth.js';
 import { proxyRoutes, debugRoutes, startKeepAlivePings } from './routes/proxy.js';
 
@@ -24,6 +25,9 @@ const server = Fastify({
 function buildCorsOriginList(): (string | RegExp)[] {
   const raw = process.env.CORS_ORIGIN ?? '';
   if (!raw.trim()) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('FATAL: CORS_ORIGIN environment variable is missing in production! System must exit for security.');
+    }
     // Safe local development defaults
     return ['http://localhost:3000', 'http://localhost:3001'];
   }
@@ -71,12 +75,33 @@ await server.register(rateLimit, {
 });
 
 // ── JWT plugin ───────────────────────────────────────────────
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET && process.env.NODE_ENV === 'production') {
+  throw new Error('FATAL: JWT_SECRET environment variable is missing in production! System must exit for security.');
+}
+
 await server.register(jwt, {
-  secret: process.env.JWT_SECRET ?? 'fallback-dev-secret-change-in-prod',
+  secret: JWT_SECRET ?? 'fallback-dev-secret-change-in-prod',
+  cookie: {
+    cookieName: 'wc_admin_token',
+    signed: false, // matches @fastify/cookie default if not explicitly signed
+  },
+});
+
+await server.register(cookie, {
+  secret: process.env.COOKIE_SECRET ?? 'fallback-cookie-secret',
+  parseOptions: {},
 });
 
 server.decorate('authenticate', async function (request: any, reply: any) {
   try {
+    // Check Authorization header first, fallback to cookie
+    const token = request.headers.authorization?.replace('Bearer ', '') || request.cookies.wc_admin_token;
+    
+    if (!token) {
+      return reply.status(401).send({ success: false, error: 'Unauthorized — token missing' });
+    }
+
     await request.jwtVerify();
   } catch (err) {
     reply.send(err);

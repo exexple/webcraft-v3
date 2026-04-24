@@ -53,15 +53,15 @@ await server.register(analyticsRoutes);
 
 const PORT = Number(process.env.PORT ?? process.env.ANALYTICS_SERVICE_PORT ?? 4002);
 
-try {
-  await db.execute(sql`SELECT 1`);
-  console.log('✅ Database connection verified');
-} catch (err) {
-  const msg = err instanceof Error ? err.message : String(err);
-  const url = process.env.DATABASE_URL ?? 'NOT SET';
-  console.error('❌ DATABASE CONNECTION FAILED:', msg);
-  console.error('   DATABASE_URL:', url.replace(/:([^@:]+)@/, ':***@'));
-}
+// ── Startup DB verification (Non-blocking) ────────────────────
+db.execute(sql`SELECT 1`)
+  .then(() => console.log('✅ Database connection verified'))
+  .catch((err) => {
+    const msg = err instanceof Error ? err.message : String(err);
+    const url = process.env.DATABASE_URL ?? 'NOT SET';
+    console.error('❌ DATABASE CONNECTION FAILED:', msg);
+    console.error('   DATABASE_URL:', url.replace(/:([^@:]+)@/, ':***@'));
+  });
 
 try {
   await server.listen({ port: PORT, host: '0.0.0.0' });

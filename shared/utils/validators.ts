@@ -1,6 +1,6 @@
-// ============================================================
 // Shared validation helpers
 // ============================================================
+import { createHash, randomUUID } from 'node:crypto';
 
 export function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -29,20 +29,16 @@ export function slugify(text: string): string {
 }
 
 export function hashIp(ip: string): string {
-  // Simple deterministic hash for IP anonymization (no crypto dependency)
-  let hash = 0;
+  // Use SHA-256 for secure, non-reversible IP anonymization
   const salt = process.env.IP_HASH_SALT || 'webcraft-studio-salt';
-  const input = ip + salt;
-  for (let i = 0; i < input.length; i++) {
-    const char = input.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash |= 0;
-  }
-  return Math.abs(hash).toString(16);
+  return createHash('sha256')
+    .update(ip + salt)
+    .digest('hex')
+    .substring(0, 16); // 64-bit equivalent for storage efficiency
 }
 
 export function generateSessionId(): string {
-  return `ws_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+  return `ws_${randomUUID()}`;
 }
 
 export function truncate(str: string, maxLength: number): string {

@@ -31,17 +31,13 @@ async function fetcher<T>(endpoint: string, options: RequestInit = {}): Promise<
     headers.set('Content-Type', 'application/json');
   }
 
-  // Add auth token if available (client-side only)
-  if (typeof window !== 'undefined') {
-    const token = localStorage.getItem('wc_admin_token');
-    if (token) {
-      headers.set('Authorization', `Bearer ${token}`);
-    }
-  }
+  // No manual auth header needed with HttpOnly cookies
+  // Browser will send the cookie automatically with credentials: 'include'
 
   const response = await fetch(`${API_BASE}${endpoint}`, {
     ...options,
     headers,
+    credentials: 'include', // Important for HttpOnly cookies
   });
 
   const data = await response.json();
@@ -68,6 +64,9 @@ export const authApi = {
   login: (data: LoginDto) => fetcher<AuthResponse>('/auth/login', {
     method: 'POST',
     body: JSON.stringify(data),
+  }),
+  logout: () => fetcher<void>('/auth/logout', {
+    method: 'POST',
   }),
 };
 
@@ -118,9 +117,8 @@ export const caseStudiesApi = {
       method: 'POST',
       body: fd,
       // Delete Content-Type so browser sets boundary for multipart/form-data
-      headers: typeof window !== 'undefined' && localStorage.getItem('wc_admin_token') 
-        ? { 'Authorization': `Bearer ${localStorage.getItem('wc_admin_token')}` } 
-        : {},
+      // HttpOnly cookies handle auth automatically
+      headers: {},
     });
   }
 };

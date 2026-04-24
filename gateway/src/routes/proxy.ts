@@ -44,7 +44,9 @@ function resolveService(fullPath: string): { serviceUrl: string; servicePath: st
   const queryString = qIdx !== -1 ? fullPath.slice(qIdx) : ''; // includes the leading '?'
 
   // pathOnly = '/leads' or '/leads/abc-123' or '/cms/case-studies'
-  const [, service, ...rest] = pathOnly.split('/');
+  // Sanitize path: remove duplicate slashes and ensure it starts with /
+  const sanitizedPath = pathOnly.replace(/\/+/g, '/') || '/';
+  const [, service, ...rest] = sanitizedPath.split('/');
   const serviceUrl = SERVICE_MAP[service];
   if (!serviceUrl) return null;
 

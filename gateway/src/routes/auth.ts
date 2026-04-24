@@ -58,6 +58,15 @@ export async function authRoutes(server: FastifyInstance) {
         expiresIn: process.env.JWT_EXPIRES_IN ?? '7d',
       });
 
+      // Set HttpOnly cookie
+      reply.setCookie('wc_admin_token', token, {
+        path: '/',
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax', // Allow navigation from same site
+        maxAge: 60 * 60 * 24 * 7, // 7 days
+      });
+
       const response: AuthResponse = {
         access_token: token,
         token_type: 'Bearer',
@@ -81,4 +90,10 @@ export async function authRoutes(server: FastifyInstance) {
       };
     }
   );
+
+  // ── POST /api/auth/logout ───────────────────────────────────
+  server.post('/logout', async (_request, reply) => {
+    reply.clearCookie('wc_admin_token', { path: '/' });
+    return { success: true };
+  });
 }
