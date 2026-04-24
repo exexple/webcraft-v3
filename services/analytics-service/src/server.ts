@@ -24,7 +24,7 @@ server.get('/health', async () => ({
 
 await server.register(analyticsRoutes);
 
-const PORT = Number(process.env.ANALYTICS_SERVICE_PORT ?? 4002);
+const PORT = Number(process.env.PORT ?? process.env.ANALYTICS_SERVICE_PORT ?? 4002);
 
 try {
   await server.listen({ port: PORT, host: '0.0.0.0' });

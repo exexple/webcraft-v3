@@ -14,14 +14,18 @@ services:
         value: production
       - key: GATEWAY_PORT
         value: 4000
-      - key: GATEWAY_HOST
-        value: 0.0.0.0
+      - key: PORT
+        value: 4000
       - key: JWT_SECRET
         sync: false
       - key: ADMIN_EMAIL
         sync: false
       - key: ADMIN_PASSWORD_HASH
         sync: false
+      # Comma-separated list of allowed CORS origins.
+      # Add your exact Vercel production URL + wildcard for preview deployments.
+      - key: CORS_ORIGIN
+        value: https://webcraft-v3-frontend.vercel.app,https://*.vercel.app
       - key: LEADS_SERVICE_URL
         value: http://wc-leads-service:4001
       - key: ANALYTICS_SERVICE_URL
@@ -44,6 +48,8 @@ services:
         value: production
       - key: LEADS_SERVICE_PORT
         value: 4001
+      - key: PORT
+        value: 4001
       - key: DATABASE_URL
         sync: false
 
@@ -61,6 +67,8 @@ services:
       - key: NODE_ENV
         value: production
       - key: ANALYTICS_SERVICE_PORT
+        value: 4002
+      - key: PORT
         value: 4002
       - key: DATABASE_URL
         sync: false
@@ -81,6 +89,8 @@ services:
       - key: NODE_ENV
         value: production
       - key: CMS_SERVICE_PORT
+        value: 4003
+      - key: PORT
         value: 4003
       - key: DATABASE_URL
         sync: false
