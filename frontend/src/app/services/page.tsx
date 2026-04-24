@@ -1,89 +1,78 @@
 import type { Metadata } from 'next';
-import styles from './services.module.css';
 
 export const metadata: Metadata = {
   title: 'Services — Webcraft Studio',
   description: 'Premium web design, development, strategy, and growth services from Webcraft Studio. Outcome-driven digital solutions for global brands.',
 };
 
-// NOTE: This component is now a server component that fetches data.
-// It assumes a new table `services` exists and the CMS service exposes
-// an endpoint at `/api/cms/services` to retrieve the data.
+const SERVICES = [
+  {
+    number: '01',
+    title: 'Web Design & UI/UX',
+    price: 'From $2,500',
+    outcomes: ['Conversion-optimized layouts', 'Premium motion design', 'Figma design system', 'Mobile-first, accessibility-ready'],
+    desc: 'Interfaces that make visitors stop scrolling and start buying. Every screen designed with intent.',
+  },
+  {
+    number: '02',
+    title: 'Web Development',
+    price: 'From $4,000',
+    outcomes: ['Next.js / React builds', 'CMS integration', '95+ Lighthouse score', 'Production deployment'],
+    desc: 'Clean, scalable code built for performance. Not just functional — fast, secure, and future-proof.',
+  },
+  {
+    number: '03',
+    title: 'Full Digital Experience',
+    price: 'From $8,000',
+    outcomes: ['Strategy → Design → Dev → Launch', 'Custom animations & interactions', 'SEO architecture', '3-month post-launch support'],
+    desc: 'The complete package. Strategy through launch, with ongoing support built in from day one.',
+  },
+  {
+    number: '04',
+    title: 'CRO & Growth Retainer',
+    price: 'From $1,500/mo',
+    outcomes: ['Monthly A/B testing', 'Analytics reporting', 'Landing page optimization', 'Priority support'],
+    desc: 'Keep compounding after launch. Monthly optimization to improve conversions over time.',
+  },
+];
 
-interface Service {
-  id: string; // Assuming a UUID from the DB
-  display_order: number;
-  title: string;
-  price: string;
-  outcomes: string[];
-  description: string;
-}
-
-async function getServices(): Promise<Service[]> {
-  try {
-    // This API URL should be in an environment variable
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api';
-    const res = await fetch(`${apiUrl}/cms/services`, {
-      next: { revalidate: 3600 }, // Revalidate every hour
-    });
-    if (!res.ok) {
-      console.error(`Failed to fetch services: ${res.statusText}`);
-      return [];
-    }
-    const data = await res.json();
-    // Assuming the API returns { success: true, data: [...] }
-    return data.data || [];
-  } catch (error) {
-    console.error('Failed to fetch services:', error);
-    return []; // Return empty array on error to prevent render failure
-  }
-}
-
-export default async function ServicesPage() {
-  const services = await getServices();
-
+export default function ServicesPage() {
   return (
-    <div className={styles.pageWrapper}>
+    <div style={{ paddingTop: '8rem' }}>
       <div className="container">
-        <div className={styles.header}>
-          <div className={styles.labelWrapper}>
-            <div className={styles.accentLine} />
+        <div style={{ marginBottom: '5rem', maxWidth: '700px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '2rem' }}>
+            <div style={{ height: 1, width: 48, background: 'var(--color-accent)' }} />
             <span className="label">Our Services</span>
           </div>
           <h1 className="display-2">
-            Everything you need.{" "}
+            Everything you need.<br />
             <span className="text-gradient">Nothing you don&apos;t.</span>
           </h1>
         </div>
 
-        {services.length > 0 ? (
-          <div className={styles.serviceList}>
-            {services.map((s, index) => (
-              <div key={s.id} className={`card ${styles.serviceCard}`}>
-                <span className={styles.serviceNumber}>{(index + 1).toString().padStart(2, '0')}</span>
-                <div>
-                  <h2 className={styles.serviceTitle}>{s.title}</h2>
-                  <p className={styles.serviceDesc}>{s.description}</p>
-                  <ul className={styles.outcomesList}>
-                    {s.outcomes.map((o) => (
-                      <li key={o} className={styles.outcomeItem}>
-                        <span className={styles.outcomeArrow}>→</span> {o}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className={styles.priceWrapper}>
-                  <div className={styles.price}>{s.price}</div>
-                  <a href="/contact" className={`btn btn-primary ${styles.quoteButton}`}>Get a Quote</a>
-                </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '5rem' }}>
+          {SERVICES.map((s) => (
+            <div key={s.number} className="card" style={{ padding: '2.5rem', display: 'grid', gridTemplateColumns: '60px 1fr auto', gap: '2.5rem', alignItems: 'start' }}>
+              <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.75rem', color: 'var(--color-text-dim)', letterSpacing: '0.1em', paddingTop: '0.25rem' }}>{s.number}</span>
+              <div>
+                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.25rem, 2vw, 1.75rem)', fontWeight: 700, marginBottom: '0.75rem', letterSpacing: '-0.02em' }}>{s.title}</h2>
+                <p style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', lineHeight: 1.7, maxWidth: '480px', marginBottom: '1.5rem' }}>{s.desc}</p>
+                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  {s.outcomes.map((o) => (
+                    <li key={o} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
+                      <span style={{ color: 'var(--color-accent)' }}>→</span> {o}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="card" style={{ padding: '3rem', textAlign: 'center' }}>
-            <p className="body-lg">Services information is currently unavailable. Please check back later or contact us directly.</p>
-          </div>
-        )}
+              <div style={{ textAlign: 'right', paddingTop: '0.25rem' }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-gold)', whiteSpace: 'nowrap' }}>{s.price}</div>
+                <a href="/contact" className="btn btn-primary" style={{ marginTop: '1rem', padding: '0.6rem 1.25rem', fontSize: '0.8rem' }}>Get a Quote</a>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
