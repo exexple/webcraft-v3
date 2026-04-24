@@ -7,15 +7,12 @@ export default function AdminDashboardPage() {
   const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
-    import('@/lib/api').then(({ authApi }) => {
-      // Just a dummy call to verify session
-      fetch(`${process.env.NEXT_PUBLIC_API_GATEWAY_URL}/auth/verify`, { credentials: 'include' })
-        .then(res => {
-          if (!res.ok) window.location.href = '/admin';
-          else setToken('valid');
-        })
-        .catch(() => window.location.href = '/admin');
-    });
+    fetch('/api/admin/verify')
+      .then(res => {
+        if (!res.ok) window.location.href = '/admin';
+        else setToken('valid');
+      })
+      .catch(() => window.location.href = '/admin');
   }, []);
 
   async function logout() {

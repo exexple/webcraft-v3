@@ -14,11 +14,10 @@ export default function AdminLoginPage() {
     setError('');
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_GATEWAY_URL}/auth/login`, {
+      const res = await fetch('/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
-        credentials: 'include', // CRITICAL: Allow browser to store HttpOnly cookie cross-port
       });
 
       const data = await res.json();
