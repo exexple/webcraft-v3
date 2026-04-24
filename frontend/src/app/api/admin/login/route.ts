@@ -13,10 +13,12 @@ export async function POST(request: Request) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
+      signal: AbortSignal.timeout(10_000), // Fail fast — don't hang the route
     });
-  } catch {
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
     return NextResponse.json(
-      { success: false, error: 'Gateway unreachable' },
+      { success: false, error: `Gateway unreachable: ${msg}` },
       { status: 503 }
     );
   }
@@ -27,9 +29,6 @@ export async function POST(request: Request) {
     return NextResponse.json(data, { status: gwRes.status });
   }
 
-  // Re-issue the cookie from localhost:3000 so it is same-origin with the
-  // Next.js app. This is the only reliable way to avoid SameSite/cross-port
-  // cookie rejection in all browsers.
   const token = data.data?.access_token;
   if (!token) {
     return NextResponse.json(
@@ -44,7 +43,7 @@ export async function POST(request: Request) {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    maxAge: 60 * 60 * 24 * 7,
   });
   return res;
 }
