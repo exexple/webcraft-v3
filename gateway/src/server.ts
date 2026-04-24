@@ -74,6 +74,11 @@ await server.register(rateLimit, {
   }),
 });
 
+await server.register(cookie, {
+  secret: process.env.COOKIE_SECRET ?? 'fallback-cookie-secret',
+  parseOptions: {},
+});
+
 // ── JWT plugin ───────────────────────────────────────────────
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET && process.env.NODE_ENV === 'production') {
@@ -88,23 +93,11 @@ await server.register(jwt, {
   },
 });
 
-await server.register(cookie, {
-  secret: process.env.COOKIE_SECRET ?? 'fallback-cookie-secret',
-  parseOptions: {},
-});
-
 server.decorate('authenticate', async function (request: any, reply: any) {
   try {
-    // Check Authorization header first, fallback to cookie
-    const token = request.headers.authorization?.replace('Bearer ', '') || request.cookies.wc_admin_token;
-    
-    if (!token) {
-      return reply.status(401).send({ success: false, error: 'Unauthorized — token missing' });
-    }
-
     await request.jwtVerify();
   } catch (err) {
-    reply.send(err);
+    reply.status(401).send({ success: false, error: 'Unauthorized — invalid or missing token' });
   }
 });
 
