@@ -5,6 +5,11 @@
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import * as schema from './schema.js';
+// CRITICAL FIX: Render free tier blocks IPv6 outbound connections.
+// Supabase db.*.supabase.co resolves to IPv6 (ENETUNREACH on Render).
+// Force Node.js DNS to return IPv4 results first.
+import { setDefaultResultOrder } from 'node:dns';
+setDefaultResultOrder('ipv4first');
 
 if (!process.env.DATABASE_URL) {
   throw new Error('DATABASE_URL environment variable is required');
