@@ -23,15 +23,11 @@ export async function contentRoutes(server: FastifyInstance) {
           .from(contentBlocks)
           .where(eq(contentBlocks.page, request.params.page));
 
-        // Convert to key→value map for easy frontend consumption
-        const blockMap = Object.fromEntries(
-          blocks.map((b) => [b.key, { value: b.value, type: b.type, id: b.id }])
-        );
-
-        return reply.send({ success: true, data: blockMap });
+        return reply.send({ success: true, data: blocks });
       } catch (err) {
-        server.log.error(err);
-        return reply.status(500).send({ success: false, error: 'Failed to fetch content' });
+        const msg = err instanceof Error ? err.message : String(err);
+        server.log.error({ err, msg }, 'Failed to fetch content blocks');
+        return reply.status(500).send({ success: false, error: `Failed to fetch content: ${msg}` });
       }
     }
   );
@@ -54,8 +50,9 @@ export async function contentRoutes(server: FastifyInstance) {
 
         return reply.status(201).send({ success: true, data: created });
       } catch (err) {
-        server.log.error(err);
-        return reply.status(500).send({ success: false, error: 'Failed to create content block' });
+        const msg = err instanceof Error ? err.message : String(err);
+        server.log.error({ err, msg }, 'Failed to create content block');
+        return reply.status(500).send({ success: false, error: `Failed to create content block: ${msg}` });
       }
     }
   );
@@ -77,8 +74,9 @@ export async function contentRoutes(server: FastifyInstance) {
 
         return reply.send({ success: true, data: updated });
       } catch (err) {
-        server.log.error(err);
-        return reply.status(500).send({ success: false, error: 'Failed to update content' });
+        const msg = err instanceof Error ? err.message : String(err);
+        server.log.error({ err, msg }, 'Failed to update content block');
+        return reply.status(500).send({ success: false, error: `Failed to update content: ${msg}` });
       }
     }
   );
@@ -97,8 +95,9 @@ export async function testimonialRoutes(server: FastifyInstance) {
 
         return reply.send({ success: true, data: all });
       } catch (err) {
-        server.log.error(err);
-        return reply.status(500).send({ success: false, error: 'Failed to fetch testimonials' });
+        const msg = err instanceof Error ? err.message : String(err);
+        server.log.error({ err, msg }, 'Failed to fetch testimonials');
+        return reply.status(500).send({ success: false, error: `Failed to fetch testimonials: ${msg}` });
       }
     }
   );
@@ -115,8 +114,9 @@ export async function testimonialRoutes(server: FastifyInstance) {
 
         return reply.status(201).send({ success: true, data: created });
       } catch (err) {
-        server.log.error(err);
-        return reply.status(500).send({ success: false, error: 'Failed to create testimonial' });
+        const msg = err instanceof Error ? err.message : String(err);
+        server.log.error({ err, msg }, 'Failed to create testimonial');
+        return reply.status(500).send({ success: false, error: `Failed to create testimonial: ${msg}` });
       }
     }
   );
@@ -138,8 +138,9 @@ export async function testimonialRoutes(server: FastifyInstance) {
 
         return reply.send({ success: true, data: updated });
       } catch (err) {
-        server.log.error(err);
-        return reply.status(500).send({ success: false, error: 'Failed to update testimonial' });
+        const msg = err instanceof Error ? err.message : String(err);
+        server.log.error({ err, msg }, 'Failed to update testimonial');
+        return reply.status(500).send({ success: false, error: `Failed to update testimonial: ${msg}` });
       }
     }
   );
@@ -152,8 +153,9 @@ export async function testimonialRoutes(server: FastifyInstance) {
         await db.delete(testimonials).where(eq(testimonials.id, request.params.id));
         return reply.send({ success: true, message: 'Testimonial deleted' });
       } catch (err) {
-        server.log.error(err);
-        return reply.status(500).send({ success: false, error: 'Failed to delete testimonial' });
+        const msg = err instanceof Error ? err.message : String(err);
+        server.log.error({ err, msg }, 'Failed to delete testimonial');
+        return reply.status(500).send({ success: false, error: `Failed to delete testimonial: ${msg}` });
       }
     }
   );
@@ -170,8 +172,9 @@ export async function metricsRoutes(server: FastifyInstance) {
 
       return reply.send({ success: true, data: all });
     } catch (err) {
-      server.log.error(err);
-      return reply.status(500).send({ success: false, error: 'Failed to fetch metrics' });
+      const msg = err instanceof Error ? err.message : String(err);
+      server.log.error({ err, msg }, 'Failed to fetch metrics');
+      return reply.status(500).send({ success: false, error: `Failed to fetch metrics: ${msg}` });
     }
   });
 
@@ -195,8 +198,9 @@ export async function metricsRoutes(server: FastifyInstance) {
 
         return reply.send({ success: true, data: updated });
       } catch (err) {
-        server.log.error(err);
-        return reply.status(500).send({ success: false, error: 'Failed to update metric' });
+        const msg = err instanceof Error ? err.message : String(err);
+        server.log.error({ err, msg }, 'Failed to update metric');
+        return reply.status(500).send({ success: false, error: `Failed to update metric: ${msg}` });
       }
     }
   );
