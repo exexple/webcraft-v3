@@ -163,3 +163,67 @@ export async function proxyRoutes(server: FastifyInstance) {
     }
   );
 }
+
+// ── Debug health aggregator ──────────────────────────────────────
+// GET /api/debug — requires JWT, returns health status of all services.
+// Use this to diagnose production failures without needing Render log access.
+// Example: curl -H "Authorization: Bearer <token>" https://wc-gateway.onrender.com/api/debug
+export async function debugRoutes(server: FastifyInstance) {
+  server.get(
+    '/debug',
+    {
+      preHandler: async (request, reply) => {
+        try {
+          await request.jwtVerify();
+        } catch {
+          return reply.status(401).send({ success: false, error: 'Unauthorized' });
+        }
+      },
+    },
+    async (_request, reply) => {
+      const services = [
+        { name: 'leads',     url: SERVICE_MAP.leads },
+        { name: 'analytics', url: SERVICE_MAP.analytics },
+        { name: 'cms',       url: SERVICE_MAP.cms },
+      ];
+
+      const results = await Promise.allSettled(
+        services.map(async ({ name, url }) => {
+          const start = Date.now();
+          try {
+            const res = await fetch(`${url}/health`, {
+              method: 'GET',
+              signal: AbortSignal.timeout(8000),
+            });
+            const data = await res.json();
+            return { name, url, status: res.status, latencyMs: Date.now() - start, data };
+          } catch (err) {
+            return {
+              name,
+              url,
+              status: 0,
+              latencyMs: Date.now() - start,
+              error: err instanceof Error ? err.message : String(err),
+            };
+          }
+        })
+      );
+
+      const report = results.map((r) =>
+        r.status === 'fulfilled' ? r.value : { name: 'unknown', error: r.reason }
+      );
+
+      return reply.send({
+        success: true,
+        gateway: {
+          corsOrigin: process.env.CORS_ORIGIN ?? 'not set',
+          leadsUrl: SERVICE_MAP.leads,
+          analyticsUrl: SERVICE_MAP.analytics,
+          cmsUrl: SERVICE_MAP.cms,
+        },
+        services: report,
+        timestamp: new Date().toISOString(),
+      });
+    }
+  );
+}

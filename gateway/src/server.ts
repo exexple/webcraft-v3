@@ -9,7 +9,7 @@ import helmet from '@fastify/helmet';
 import rateLimit from '@fastify/rate-limit';
 import jwt from '@fastify/jwt';
 import { authRoutes } from './routes/auth.js';
-import { proxyRoutes, startKeepAlivePings } from './routes/proxy.js';
+import { proxyRoutes, debugRoutes, startKeepAlivePings } from './routes/proxy.js';
 
 const server = Fastify({
   logger: {
@@ -98,6 +98,7 @@ server.get('/health', async () => ({
 
 // ── Routes ───────────────────────────────────────────────────
 await server.register(authRoutes, { prefix: '/api/auth' });
+await server.register(debugRoutes, { prefix: '/api' });
 await server.register(proxyRoutes, { prefix: '/api' });
 
 // ── Start ────────────────────────────────────────────────────

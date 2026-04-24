@@ -3,7 +3,7 @@
 // ============================================================
 
 import type { FastifyInstance } from 'fastify';
-import { eq, desc } from 'drizzle-orm';
+import { eq, desc, sql } from 'drizzle-orm';
 import { db } from '../db/client.js';
 import { leads } from '../db/schema.js';
 import type { CreateLeadDto, UpdateLeadDto } from '@webcraft/shared/types';
@@ -69,17 +69,18 @@ export async function leadRoutes(server: FastifyInstance) {
           .limit(limit)
           .offset(offset);
 
-        const [{ count }] = await db
-          .select({ count: db.$count(leads) })
+        const [countRow] = await db
+          .select({ count: sql<number>`count(*)::int` })
           .from(leads);
 
+        const total = Number(countRow?.count ?? 0);
         return reply.send({
           success: true,
           data: allLeads,
-          total: Number(count),
+          total,
           page,
           limit,
-          hasMore: offset + limit < Number(count),
+          hasMore: offset + limit < total,
         });
       } catch (err) {
         server.log.error(err);

@@ -52,6 +52,9 @@ services:
         value: 4001
       - key: DATABASE_URL
         sync: false
+      # Required: microservices use this to configure CORS in production
+      - key: GATEWAY_URL
+        value: https://wc-gateway.onrender.com
 
   # ─────────────────────────────────────────────────────────
   # ANALYTICS SERVICE
@@ -74,6 +77,9 @@ services:
         sync: false
       - key: IP_HASH_SALT
         sync: false
+      # Required: microservices use this to configure CORS in production
+      - key: GATEWAY_URL
+        value: https://wc-gateway.onrender.com
 
   # ─────────────────────────────────────────────────────────
   # CMS SERVICE
@@ -98,3 +104,6 @@ services:
         sync: false
       - key: SUPABASE_SERVICE_ROLE_KEY
         sync: false
+      # Required: microservices use this to configure CORS in production
+      - key: GATEWAY_URL
+        value: https://wc-gateway.onrender.com
