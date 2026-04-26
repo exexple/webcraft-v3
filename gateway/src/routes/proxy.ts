@@ -75,10 +75,15 @@ async function proxyRequest(
       'X-Request-Id': String(request.id),
     };
 
-    // Forward auth header if present
-    if (request.headers.authorization) {
-      headers['Authorization'] = request.headers.authorization;
-    }
+    // Forward cookies 
+if (request.headers.cookie) {
+  headers['cookie'] = request.headers.cookie;
+}
+
+// (optional) still forward auth if ever used
+if (request.headers.authorization) {
+  headers['Authorization'] = request.headers.authorization;
+}
 
     const body =
       request.method !== 'GET' && request.method !== 'DELETE'
