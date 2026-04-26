@@ -1,5 +1,5 @@
 // ============================================================
-// Proxy Routes — Gateway
+// Proxy Routes — Gateway (FIXED VERSION)
 // ============================================================
 
 import type {
@@ -8,25 +8,21 @@ import type {
   FastifyReply
 } from 'fastify';
 
-//  ENV CONFIG
+// ENV CONFIG
 const CMS_SERVICE_URL = process.env.CMS_SERVICE_URL!;
 const ANALYTICS_SERVICE_URL = process.env.ANALYTICS_SERVICE_URL!;
 const LEADS_SERVICE_URL = process.env.LEADS_SERVICE_URL!;
 
 // ============================================================
-// CORE PROXY FUNCTION
+// CORE PROXY FUNCTION (CLEANED)
 // ============================================================
 
 async function proxyRequest(
   request: FastifyRequest,
   reply: FastifyReply,
-  targetBase: string
+  targetUrl: string
 ) {
   try {
-    // Remove /api prefix
-    const path = request.url.replace(/^\/api/, '');
-    const targetUrl = `${targetBase}${path}`;
-
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
       'X-Forwarded-For': request.ip,
@@ -38,7 +34,7 @@ async function proxyRequest(
       headers['cookie'] = request.headers.cookie;
     }
 
-    //  safe cookie access
+    // Extract token safely
     const cookies = (request as any).cookies || {};
     const token = cookies.wc_admin_token;
 
@@ -75,28 +71,35 @@ async function proxyRequest(
 }
 
 // ============================================================
-// ROUTES
+// ROUTES (FIXED PATH HANDLING)
 // ============================================================
 
 export async function proxyRoutes(server: FastifyInstance) {
+
   // CMS
-  server.all('/api/cms/*', (req, reply) =>
-    proxyRequest(req, reply, CMS_SERVICE_URL)
-  );
+  server.all('/api/cms/*', (req, reply) => {
+    const path = req.url.replace(/^\/api\/cms/, '');
+    const targetUrl = `${CMS_SERVICE_URL}${path}`;
+    return proxyRequest(req, reply, targetUrl);
+  });
 
   // Analytics
-  server.all('/api/analytics/*', (req, reply) =>
-    proxyRequest(req, reply, ANALYTICS_SERVICE_URL)
-  );
+  server.all('/api/analytics/*', (req, reply) => {
+    const path = req.url.replace(/^\/api\/analytics/, '');
+    const targetUrl = `${ANALYTICS_SERVICE_URL}${path}`;
+    return proxyRequest(req, reply, targetUrl);
+  });
 
   // Leads
-  server.all('/api/leads/*', (req, reply) =>
-    proxyRequest(req, reply, LEADS_SERVICE_URL)
-  );
+  server.all('/api/leads/*', (req, reply) => {
+    const path = req.url.replace(/^\/api\/leads/, '');
+    const targetUrl = `${LEADS_SERVICE_URL}${path}`;
+    return proxyRequest(req, reply, targetUrl);
+  });
 }
 
 // ============================================================
-// DEBUG ROUTES (optional but required by your server.ts)
+// DEBUG ROUTES
 // ============================================================
 
 export async function debugRoutes(server: FastifyInstance) {
