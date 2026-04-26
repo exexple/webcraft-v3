@@ -9,6 +9,11 @@ import { sql } from 'drizzle-orm';
 import { db } from './db/client.js';
 import { caseStudyRoutes } from './routes/case-studies.js';
 import { contentRoutes, testimonialRoutes, metricsRoutes } from './routes/content.js';
+import metricsRoutes from './routes/metrics';
+
+await server.register(metricsRoutes, {
+  prefix: '/api/cms',
+});
 
 const server = Fastify({
   logger: { level: process.env.NODE_ENV === 'production' ? 'info' : 'info' },
