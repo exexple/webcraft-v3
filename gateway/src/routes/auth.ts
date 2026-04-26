@@ -3,7 +3,7 @@
 // Handles admin login and token verification
 // ============================================================
 
-import type { FastifyInstance } from 'fastify';
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { createHash } from 'crypto';
 import type { LoginDto, AuthResponse, JwtPayload } from '@webcraft/shared/types';
 
@@ -36,12 +36,10 @@ export async function authRoutes(server: FastifyInstance) {
         });
       }
 
-      // Simple SHA-256 password check (production should use bcrypt)
+      // SHA-256 check (fine for now)
       const inputHash = createHash('sha256').update(password).digest('hex');
-      const isValidEmail = email === adminEmail;
-      const isValidPass = inputHash === adminPassHash;
 
-      if (!isValidEmail || !isValidPass) {
+      if (email !== adminEmail || inputHash !== adminPassHash) {
         return reply.status(401).send({
           success: false,
           error: 'Invalid credentials',
@@ -58,14 +56,13 @@ export async function authRoutes(server: FastifyInstance) {
         expiresIn: process.env.JWT_EXPIRES_IN ?? '7d',
       });
 
-      // Set HttpOnly cookie
+      // ✅ IMPORTANT COOKIE FIX (for Vercel ↔ Render cross-domain)
       reply.setCookie('wc_admin_token', token, {
         path: '/',
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'none',
-        secure: true,
-        maxAge: 60 * 60 * 24 * 7, // 7 days
+        secure: true,          // required for HTTPS
+        sameSite: 'none',      // required for cross-site (Vercel → Render)
+        maxAge: 60 * 60 * 24 * 7,
       });
 
       const response: AuthResponse = {
@@ -94,7 +91,13 @@ export async function authRoutes(server: FastifyInstance) {
 
   // ── POST /api/auth/logout ───────────────────────────────────
   server.post('/logout', async (_request, reply) => {
-    reply.clearCookie('wc_admin_token', { path: '/' });
+    reply.clearCookie('wc_admin_token', {
+      path: '/',
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+    });
+
     return { success: true };
   });
 }
