@@ -40,10 +40,10 @@ export async function metricsRoutes(server: FastifyInstance) {
       // Convert id if DB uses number
       const metricId = Number(id); // safe even if already number
 
-      await db
-        .update(siteMetrics)
-        .set({ value })
-        .where(eq(siteMetrics.id, metricId)); 
+     await db
+      .update(siteMetrics)
+      .set({ value })
+      .where(eq(siteMetrics.id, id)); 
 
       return {
         success: true,
