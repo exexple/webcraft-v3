@@ -77,17 +77,21 @@ async function proxyRequest(
 export async function proxyRoutes(server: FastifyInstance) {
 
   // CMS
-  server.all('/api/cms/*', (req, reply) => {
-    const targetUrl = `${CMS_SERVICE_URL}${req.url}`;
-    return proxyRequest(req, reply, targetUrl);
-  });
+  // CMS (FIXED PROPERLY)
+server.all('/api/cms/*', (req, reply) => {
+  const path = req.url.replace(/^\/api\/cms/, '');
+  const targetUrl = `${CMS_SERVICE_URL}/api/cms${path}`;
+  return proxyRequest(req, reply, targetUrl);
+});
   // Analytics
-  server.all('/api/analytics/*', (req, reply) => {
-    const targetUrl = `${ANALYTICS_SERVICE_URL}${req.url}`;
-    return proxyRequest(req, reply, targetUrl);
-  });
+server.all('/api/analytics/*', (req, reply) => {
+  const path = req.url.replace(/^\/api\/analytics/, '');
+  const targetUrl = `${ANALYTICS_SERVICE_URL}/api/analytics${path}`;
+  return proxyRequest(req, reply, targetUrl);
+});
   // Leads
   server.all('/api/leads/*', (req, reply) => {
+    const path = req.url.replace(/^\/api\/leads/, '');
     const targetUrl = `${LEADS_SERVICE_URL}${req.url}`;
     return proxyRequest(req, reply, targetUrl);
   });
