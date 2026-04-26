@@ -88,8 +88,7 @@ export async function proxyRoutes(server: FastifyInstance) {
   });
   // Leads
   server.all('/api/leads/*', (req, reply) => {
-    const path = req.url.replace(/^\/api\/leads/, '');
-    const targetUrl = `${LEADS_SERVICE_URL}${path}`;
+    const targetUrl = `${LEADS_SERVICE_URL}${req.url}`;
     return proxyRequest(req, reply, targetUrl);
   });
 }
