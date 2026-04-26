@@ -78,14 +78,14 @@ export async function proxyRoutes(server: FastifyInstance) {
 
   // CMS
   server.all('/api/cms/*', (req, reply) => {
-    const path = req.url.replace(/^\/api\/cms/, '');
+    const path = req.url.replace(/^\/api/, '');
     const targetUrl = `${CMS_SERVICE_URL}${path}`;
     return proxyRequest(req, reply, targetUrl);
   });
 
   // Analytics
   server.all('/api/analytics/*', (req, reply) => {
-    const path = req.url.replace(/^\/api\/analytics/, '');
+    const path = req.url.replace(/^\/api/, '');
     const targetUrl = `${ANALYTICS_SERVICE_URL}${path}`;
     return proxyRequest(req, reply, targetUrl);
   });
