@@ -49,7 +49,7 @@ server.get('/health', async () => {
   };
 });
 
-await server.register(leadsRoutes, {
+await server.register(leadRoutes, {
   prefix: '/api/leads',
 });
 

@@ -117,7 +117,7 @@ server.get('/health', async () => ({
 // ── Routes ───────────────────────────────────────────────────
 await server.register(authRoutes, { prefix: '/api/auth' });
 await server.register(debugRoutes, { prefix: '/api' });
-await server.register(proxyRoutes, { prefix: '/api' });
+await server.register(proxyRoutes, { prefix: '' });
 
 // ── Start ────────────────────────────────────────────────────
 const PORT = Number(process.env.PORT ?? process.env.GATEWAY_PORT ?? 4000);
