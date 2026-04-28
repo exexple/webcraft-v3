@@ -49,7 +49,9 @@ server.get('/health', async () => {
   };
 });
 
-await server.register(leadRoutes);
+await server.register(leadsRoutes, {
+  prefix: '/api/leads',
+});
 
 const PORT = Number(process.env.PORT ?? process.env.LEADS_SERVICE_PORT ?? 4001);
 
