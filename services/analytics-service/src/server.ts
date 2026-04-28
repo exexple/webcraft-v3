@@ -49,7 +49,9 @@ server.get('/health', async () => {
   };
 });
 
-await server.register(analyticsRoutes);
+await server.register(analyticsRoutes, {
+  prefix: '/api/analytics',
+});
 
 const PORT = Number(process.env.PORT ?? process.env.ANALYTICS_SERVICE_PORT ?? 4002);
 
